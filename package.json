@@ -9,6 +9,7 @@
     "build:base": "NODE_OPTIONS=--max_old_space_size=4096 vite build --mode base && npm run build:flush",
     "build:distributed": "NODE_OPTIONS=--max_old_space_size=5020 vite build --mode distributed && npm run build:flush",
     "build:lib": "vite build --mode lib",
+    "build:pks": "npm run build:distributed",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix",
     "lint:stylelint": "stylelint --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
     "preview": "vite preview"
