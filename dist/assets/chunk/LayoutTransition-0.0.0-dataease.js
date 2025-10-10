@@ -1,0 +1,1 @@
+import{u as t}from"./index-0.0.0-dataease.js";import{d as r,e as n,f as s,g as a,u}from"./vue-0.0.0-dataease.js";import"./lodash-0.0.0-dataease.js";const l=r({__name:"LayoutTransition",setup(p){const e=t();return(c,_)=>{const o=n("router-view");return s(),a(o,{key:u(e).path})}}});export{l as default};

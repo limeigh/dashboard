@@ -1,0 +1,1 @@
+import{p as a}from"./index-0.0.0-dataease.js";import{d as o,f as n,O as l,P as e,a4 as _,Z as p}from"./vue-0.0.0-dataease.js";const r={class:"base-info-item"},i={class:"label"},c={class:"value ellipsis"},u=o({__name:"BaseInfoItem",props:{label:a.string.def("")},setup(s){return(t,d)=>(n(),l("div",r,[e("p",i,_(s.label),1),e("p",c,[p(t.$slots,"default")])]))}});export{u as _};

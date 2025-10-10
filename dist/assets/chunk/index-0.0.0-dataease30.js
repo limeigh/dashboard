@@ -1,0 +1,1 @@
+import{x as a,w as c}from"./vue-0.0.0-dataease.js";const o="van-hairline",R=`${o}--bottom`,e=`${o}--surround`,E=`${o}--top-bottom`,_=`${o}-unset--top-bottom`,p="van-haptics-feedback",i=Symbol("van-form"),B=5,O=Symbol();function P(s){const t=a(O,null);t&&c(t,n=>{n&&s()})}export{_ as B,i as F,p as H,O as P,B as T,E as a,R as b,e as c,P as o};

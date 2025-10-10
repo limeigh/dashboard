@@ -1,0 +1,1 @@
+const e=[{key:"left",label:"X",min:-1e3,max:2e4,step:1},{key:"width",label:"W",min:2,max:2e4,step:1},{key:"top",label:"Y",min:-1e3,max:2e4,step:1},{key:"height",label:"H",min:2,max:2e4,step:1}],a=["text","time","value","value","value","location","binary","url"],t=["文本","时间","数值","数值(小数)","数值","地理位置","文件","URL"];export{t as a,a as f,e as p};

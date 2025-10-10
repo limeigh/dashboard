@@ -1,0 +1,1 @@
+function r(t,...n){for(let e=0;e<n.length;e++)if(t===n[e])return!0;return!1}function f(t,...n){if(!t||!n)return!1;for(let e=0;e<n.length;e++)if(t.includes(n[e]))return!0;return!1}export{r as e,f as i};

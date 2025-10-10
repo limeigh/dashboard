@@ -1,0 +1,1 @@
+import{x as a}from"./ConfigGlobal.vue_vue_type_script_setup_true_lang-0.0.0-dataease.js";const t=r=>a.post({url:"/watermark/save",data:r}),s=async()=>a.get({url:"watermark/find"});export{t as a,s as w};

@@ -1,0 +1,1 @@
+import{E as e}from"./EmptyBackground-0.0.0-dataease.js";import{p}from"./index-0.0.0-dataease.js";import{d as t,f as s,g as n}from"./vue-0.0.0-dataease.js";const _=t({__name:"ErrorTemplate",props:{msg:p.string.def("")},setup(o){const r=o;return(m,a)=>(s(),n(e,{"img-type":"noneWhite",description:r.msg},null,8,["description"]))}});export{_};

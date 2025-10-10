@@ -1,0 +1,1 @@
+import{d as e,f as t,O as o}from"./vue-0.0.0-dataease.js";import{_}from"./_plugin-vue_export-helper-0.0.0-dataease.js";const n={class:"rect-main"},s=e({__name:"Component",props:{element:{type:Object,default(){return{style:{}}}}},setup(a){return(c,p)=>(t(),o("div",n))}});const m=_(s,[["__scopeId","data-v-3f12f964"]]);export{m as default};
