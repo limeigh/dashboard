@@ -354,7 +354,7 @@ const getEmptyDesc = (): string => {
           :empty-img="imgType"
           class="workbranch-grid"
         >
-          <el-table-column key="name" width="280" prop="name" :label="t('common.name') + 'a'">
+          <el-table-column key="name" width="280" prop="name" :label="t('common.name')">
             <template v-slot:default="scope">
               <div class="name-content" :class="{ 'jump-active': jumpActiveCheck(scope.row) }">
                 <el-icon v-if="scope.row.extFlag" style="margin-right: 12px; font-size: 18px">
