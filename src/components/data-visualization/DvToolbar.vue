@@ -36,6 +36,7 @@ import {
   initCanvasData
 } from '@/utils/canvasUtils'
 import { changeSizeWithScale } from '@/utils/changeComponentsSizeWithScale'
+import { getStoragePrefix } from '@/utils/utils'
 import MoreComGroup from '@/custom-component/component-group/MoreComGroup.vue'
 import { XpackComponent } from '@/components/plugin'
 import { useCache } from '@/hooks/web/useCache'
@@ -132,7 +133,11 @@ const resourceOptFinish = param => {
 }
 
 const saveCanvasWithCheck = (withPublish = false, status?) => {
-  if (userStore.getOid && wsCache.get('user.oid') && userStore.getOid !== wsCache.get('user.oid')) {
+  if (
+    userStore.getOid &&
+    wsCache.get(getStoragePrefix('user.oid')) &&
+    userStore.getOid !== wsCache.get(getStoragePrefix('user.oid'))
+  ) {
     ElMessageBox.confirm('已切换至新组织，无权保存其他组织的资源', {
       confirmButtonType: 'primary',
       type: 'warning',
@@ -181,7 +186,7 @@ const saveResource = (checkParams?) => {
     nextTick(() => {
       canvasSaveWithParams(checkParams, () => {
         snapshotStore.resetStyleChangeTimes()
-        wsCache.delete('DE-DV-CATCH-' + dvInfo.value.id)
+        wsCache.delete(getStoragePrefix('DE-DV-CATCH-' + dvInfo.value.id))
         let url = window.location.href
         url = url.replace(/(#\/[^?]*)(?:\?[^#]*)?/, `$1?dvId=${dvInfo.value.id}`)
         if (!embeddedStore.baseUrl) {
@@ -265,8 +270,8 @@ const backHandler = (url: string) => {
     return
   }
   dvMainStore.canvasStateChange({ key: 'curPointArea', value: 'base' })
-  wsCache.delete('DE-DV-CATCH-' + dvInfo.value.id)
-  wsCache.set('dv-info-id', dvInfo.value.id)
+  wsCache.delete(getStoragePrefix('DE-DV-CATCH-' + dvInfo.value.id))
+  wsCache.set(getStoragePrefix('dv-info-id'), dvInfo.value.id)
   if (!!history.state.back) {
     history.back()
   } else {

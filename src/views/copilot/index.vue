@@ -27,6 +27,7 @@ import { type Tree } from '@/views/visualized/data/dataset/form/CreatDsGroup.vue
 import { cloneDeep } from 'lodash-es'
 import { iconFieldMap } from '@/components/icon-group/field-list'
 import { useI18n } from '@/hooks/web/useI18n'
+import { getStoragePrefix } from '@/utils/utils'
 
 const embeddedStore = useEmbedded()
 const { wsCache } = useCache()
@@ -75,8 +76,8 @@ const sortList = ['time_asc', 'time_desc', 'name_asc', 'name_desc']
 const initDataset = async () => {
   await getDatasetTree({}).then(res => {
     datasetTree.value = (res as unknown as Tree[]) || []
-    let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1]
-    curSortType = wsCache.get('TreeSort-dataset') ?? curSortType
+    let curSortType = sortList[Number(wsCache.get(getStoragePrefix('TreeSort-backend'))) ?? 1]
+    curSortType = wsCache.get(getStoragePrefix('TreeSort-dataset')) ?? curSortType
     originResourceTree.value = cloneDeep(unref(datasetTree))
     datasetTree.value = treeSort(originResourceTree.value, curSortType)
   })

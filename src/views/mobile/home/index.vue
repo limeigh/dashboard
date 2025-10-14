@@ -8,6 +8,7 @@ import { useCache } from '@/hooks/web/useCache'
 import Workbranch from '@/views/mobile/components/Workbranch.vue'
 import request from '@/config/axios'
 import nothingNone from '@/assets/img/none.png'
+import { getStoragePrefix } from '@/utils/utils'
 import VanTabs from 'vant/es/tabs'
 import VanNavBar from 'vant/es/nav-bar'
 import VanTab from 'vant/es/tab'
@@ -139,8 +140,8 @@ const handleClick = ({ name, disabled }) => {
   }
 }
 onMounted(() => {
-  activeTab.value = wsCache.get('activeTab') || 'recent'
-  wsCache.set('activeTab', '')
+  activeTab.value = wsCache.get(getStoragePrefix('activeTab')) || 'recent'
+  wsCache.set(getStoragePrefix('activeTab'), '')
   !!busiAuthList.length &&
     handleClick({
       name: activeTab.value,
@@ -150,7 +151,7 @@ onMounted(() => {
 
 const handleCellClick = ele => {
   if (ele.extFlag1 === 0) return
-  wsCache.set('activeTab', activeTab.value)
+  wsCache.set(getStoragePrefix('activeTab'), activeTab.value)
   router.push({
     path: '/panel/mobile',
     query: {

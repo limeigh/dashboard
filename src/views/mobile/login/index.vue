@@ -13,6 +13,7 @@ import { useUserStoreWithOut } from '@/store/modules/user'
 import { useCache } from '@/hooks/web/useCache'
 import { useRouter } from 'vue-router_2'
 import { rsaEncryp } from '@/utils/encryption'
+import { getStoragePrefix } from '@/utils/utils'
 import VanForm from 'vant/es/form'
 import VanField from 'vant/es/field'
 import VanButton from 'vant/es/button'
@@ -120,9 +121,9 @@ const onSubmit = async () => {
   }
   const name = username.value.trim()
   const pwd = password.value
-  if (!wsCache.get(appStore.getDekey)) {
+  if (!wsCache.get(getStoragePrefix(appStore.getDekey))) {
     const res = await queryDekey()
-    wsCache.set(appStore.getDekey, res.data)
+    wsCache.set(getStoragePrefix(appStore.getDekey), res.data)
   }
   const isLdap = loginType.value === 'ldap'
   const param = {

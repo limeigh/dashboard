@@ -201,7 +201,7 @@ import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { XpackComponent } from '@/components/plugin'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { Base64 } from 'js-base64'
-import { getActiveCategories } from '@/utils/utils'
+import { getActiveCategories, getStoragePrefix } from '@/utils/utils'
 const { t } = useI18n()
 const { wsCache } = useCache()
 const embeddedStore = useEmbedded()
@@ -514,7 +514,7 @@ const apply = () => {
     )
     return
   }
-  const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+  const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
   if (state.pid) {
     newWindow = window.open(baseUrl + `&pid=${state.pid}`, openType)
   } else {
@@ -609,10 +609,10 @@ onMounted(() => {
 })
 
 const previewInit = () => {
-  const previewId = wsCache.get('template-preview-id')
+  const previewId = wsCache.get(getStoragePrefix('template-preview-id'))
   if (previewId) {
     templatePreview(previewId)
-    wsCache.delete('template-preview-id')
+    wsCache.delete(getStoragePrefix('template-preview-id'))
   }
 }
 

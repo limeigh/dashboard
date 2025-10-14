@@ -77,6 +77,7 @@ import { useEmitt } from '@/hooks/web/useEmitt'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
 import { useI18n } from '@/hooks/web/useI18n'
+import { getStoragePrefix } from '@/utils/utils'
 const dvMainStore = dvMainStoreWithOut()
 const props = defineProps({
   canvasStyleData: {
@@ -122,7 +123,7 @@ const toggleFullscreen = () => {
   }
 }
 const back2Last = () => {
-  const parentUrl = localStorage.getItem('beforeJumpUrl')
+  const parentUrl = localStorage.getItem(getStoragePrefix('beforeJumpUrl'))
   localStorage.removeItem('beforeJumpUrl')
   window.location.href = parentUrl
   window.location.reload()

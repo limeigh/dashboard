@@ -7,6 +7,7 @@ import type { BusiTreeRequest, BusiTreeNode } from '@/models/tree/TreeNode'
 import { pathValid } from '@/store/modules/permission'
 import { useCache } from '@/hooks/web/useCache'
 import { useAppStoreWithOut } from '@/store/modules/app'
+import { getStoragePrefix } from '@/utils/utils'
 const appStore = useAppStoreWithOut()
 const { wsCache } = useCache()
 export interface InnerInteractive {
@@ -59,10 +60,10 @@ export const interactiveStore = defineStore('interactive', {
         }
         this.data[flag] = tempData
         if (flag === 0) {
-          wsCache.set('panel-weight', {})
+          wsCache.set(getStoragePrefix('panel-weight'), {})
         }
         if (flag === 1) {
-          wsCache.set('screen-weight', {})
+          wsCache.set(getStoragePrefix('screen-weight'), {})
         }
         return []
       }
@@ -73,10 +74,10 @@ export const interactiveStore = defineStore('interactive', {
       }
       this.data[flag] = convertInteractive(res)
       if (flag === 0) {
-        wsCache.set('panel-weight', convertLocalStorage(this.data[flag]))
+        wsCache.set(getStoragePrefix('panel-weight'), convertLocalStorage(this.data[flag]))
       }
       if (flag === 1) {
-        wsCache.set('screen-weight', convertLocalStorage(this.data[flag]))
+        wsCache.set(getStoragePrefix('screen-weight'), convertLocalStorage(this.data[flag]))
       }
       return res
     },
@@ -111,8 +112,8 @@ export const interactiveStore = defineStore('interactive', {
     },
     clear() {
       this.data = {}
-      wsCache.set('panel-weight', {})
-      wsCache.set('screen-weight', {})
+      wsCache.set(getStoragePrefix('panel-weight'), {})
+      wsCache.set(getStoragePrefix('screen-weight'), {})
     }
   }
 })

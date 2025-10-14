@@ -16,7 +16,7 @@ import {
 import type { DatasetOrFolder } from '@/api/dataset'
 import nothingTree from '@/assets/img/nothing-tree.png'
 import { BusiTreeRequest } from '@/models/tree/TreeNode'
-import { filterFreeFolder } from '@/utils/utils'
+import { filterFreeFolder, getStoragePrefix } from '@/utils/utils'
 export interface Tree {
   isCross: boolean
   name: string
@@ -166,8 +166,8 @@ const createInit = (type, data: Tree, exec, name: string) => {
       filterFreeFolder(res, 'dataset')
       dfs(res as unknown as Tree[])
       state.tData = (res as unknown as Tree[]) || []
-      let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1]
-      curSortType = wsCache.get('TreeSort-dataset') ?? curSortType
+      let curSortType = sortList[Number(wsCache.get(getStoragePrefix('TreeSort-backend'))) ?? 1]
+      curSortType = wsCache.get(getStoragePrefix('TreeSort-dataset')) ?? curSortType
       originResourceTree.value = cloneDeep(unref(state.tData))
       state.tData = treeSort(originResourceTree.value, curSortType)
       if (state.tData.length && state.tData[0].name === 'root' && state.tData[0].id === '0') {

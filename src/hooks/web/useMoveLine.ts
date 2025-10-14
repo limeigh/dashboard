@@ -1,13 +1,14 @@
 import { ref, onBeforeUnmount, onMounted } from 'vue'
 import { useCache } from '@/hooks/web/useCache'
 import { useEmitt } from '@/hooks/web/useEmitt'
+import { getStoragePrefix } from '@/utils/utils'
 
 type Sidebar = 'DATASET' | 'DASHBOARD' | 'DATASOURCE' | 'DATA-FILLING'
 
 export const useMoveLine = (type: Sidebar) => {
   const { wsCache } = useCache('localStorage')
-  const width = ref(wsCache.get(type) || 280)
-  wsCache.set('current-collapse_bar', width.value)
+  const width = ref(wsCache.get(getStoragePrefix(type)) || 280)
+  wsCache.set(getStoragePrefix('current-collapse_bar'), width.value)
 
   const getCoordinates = () => {
     if (document.querySelector('.sidebar-move-line')) {
@@ -19,7 +20,7 @@ export const useMoveLine = (type: Sidebar) => {
   }
 
   const setCollapseBarWidth = () => {
-    wsCache.set('current-collapse_bar', width.value)
+    wsCache.set(getStoragePrefix('current-collapse_bar'), width.value)
     useEmitt().emitter.emit('current-collapse_bar')
   }
 
@@ -41,7 +42,7 @@ export const useMoveLine = (type: Sidebar) => {
       document.querySelector('.sidebar-move-line').className = 'sidebar-move-line'
     }
     document.querySelector('body').style['user-select'] = 'auto'
-    wsCache.set(type, width.value)
+    wsCache.set(getStoragePrefix(type), width.value)
     document.removeEventListener('mousemove', setCoordinates)
   }
 

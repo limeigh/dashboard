@@ -28,7 +28,7 @@ import {
   SENIOR_STYLE_SETTING_LIGHT
 } from '@/views/chart/components/editor/util/chart'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
-import { deepCopy, nameTrim } from '@/utils/utils'
+import { deepCopy, nameTrim, getStoragePrefix } from '@/utils/utils'
 import { ElMessage, ElMessageBox } from 'element-plus-secondary'
 import { guid } from '@/views/visualized/data/dataset/form/util'
 const dvMainStore = dvMainStoreWithOut()
@@ -258,7 +258,7 @@ export function historyAdaptor(
       componentItem.canvasId = 'canvas-main'
     })
   }
-  const curVersion = wsCache.get('x-de-execute-version')
+  const curVersion = wsCache.get(getStoragePrefix('x-de-execute-version'))
   // 含有定时报告过滤项每次都需要匹配
   const reportFilterInfo = canvasInfo?.reportFilterInfo
   if (canvasInfo?.checkVersion === curVersion && !reportFilterInfo) {
@@ -608,7 +608,7 @@ export async function canvasSaveWithParams(params, callBack) {
     canvasViewInfo: canvasViewInfo.value,
     appData: appData.value,
     ...curDvInfo.value,
-    checkVersion: wsCache.get('x-de-execute-version'),
+    checkVersion: wsCache.get(getStoragePrefix('x-de-execute-version')),
     contentId: newContentId,
     watermarkInfo: null
   }

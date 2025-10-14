@@ -14,7 +14,7 @@ import { useEmbedded } from '@/store/modules/embedded'
 import { useLinkStoreWithOut } from '@/store/modules/link'
 import { config } from './config'
 import { configHandler } from './refresh'
-import { isMobile, getLocale } from '@/utils/utils'
+import { isMobile, getLocale, getStoragePrefix } from '@/utils/utils'
 import { useRequestStoreWithOut } from '@/store/modules/request'
 type AxiosErrorWidthLoading<T> = T & {
   config: {
@@ -248,7 +248,7 @@ service.interceptors.response.use(
     if (header.has('DE-GATEWAY-FLAG')) {
       localStorage.clear()
       const flag = header.get('DE-GATEWAY-FLAG')
-      localStorage.setItem('DE-GATEWAY-FLAG', flag.toString())
+      localStorage.setItem(getStoragePrefix('DE-GATEWAY-FLAG'), flag.toString())
       let queryRedirectPath = '/workbranch/index'
       if (router.currentRoute.value.fullPath) {
         queryRedirectPath = router.currentRoute.value.fullPath as string
@@ -289,14 +289,14 @@ const showMsg = (msg: string, id: string) => {
 const executeVersionHandler = (response: AxiosResponse) => {
   const key = 'x-de-execute-version'
   const executeVersion = response.headers[key]
-  const cacheVal = wsCache.get(key)
+  const cacheVal = wsCache.get(getStoragePrefix(key))
   if (!cacheVal) {
-    wsCache.set(key, executeVersion)
+    wsCache.set(getStoragePrefix(key), executeVersion)
     return
   }
   if (executeVersion && executeVersion !== cacheVal) {
     wsCache.clear()
-    wsCache.set(key, executeVersion)
+    wsCache.set(getStoragePrefix(key), executeVersion)
     showMsg('系统有升级，请点击刷新页面', '-sys-upgrade-')
   }
 }

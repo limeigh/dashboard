@@ -3,6 +3,7 @@ import icon_close_outlined from '@/assets/svg/icon_close_outlined.svg'
 import icon_searchOutline_outlined from '@/assets/svg/icon_search-outline_outlined.svg'
 import { reactive, ref, computed, watch, nextTick } from 'vue'
 import { ElIcon, ElMessage, ElMessageBox, ElMessageBoxOptions } from 'element-plus-secondary'
+import { getStoragePrefix } from '@/utils/utils'
 import CreatDsGroup from './CreatDsGroup.vue'
 import type { DsType } from './DsTypeList.vue'
 import DsTypeList from './DsTypeList.vue'
@@ -739,9 +740,9 @@ const drawTitle = computed(() => {
 })
 
 const beforeClose = () => {
-  if (wsCache.get('ds-new-success')) {
+  if (wsCache.get(getStoragePrefix('ds-new-success'))) {
     emits('refresh')
-    wsCache.set('ds-new-success', false)
+    wsCache.set(getStoragePrefix('ds-new-success'), false)
   }
   if (
     !showFinishPage.value &&

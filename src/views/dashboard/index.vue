@@ -26,7 +26,7 @@ import { watermarkFind } from '@/api/watermark'
 import { XpackComponent } from '@/components/plugin'
 import { Base64 } from 'js-base64'
 import CanvasCacheDialog from '@/components/visualization/CanvasCacheDialog.vue'
-import { deepCopy } from '@/utils/utils'
+import { deepCopy, getStoragePrefix } from '@/utils/utils'
 const interactiveStore = interactiveStoreWithOut()
 import { useRequestStoreWithOut } from '@/store/modules/request'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
@@ -43,7 +43,7 @@ const eventCheck = e => {
     const resourceId = embeddedStore.resourceId || router.currentRoute.value.query.resourceId
     const opt = embeddedStore.opt || router.currentRoute.value.query.opt
     if (!(opt && opt === 'create')) {
-      check(wsCache.get('panel-weight'), resourceId as string, 4)
+      check(wsCache.get(getStoragePrefix('panel-weight')), resourceId as string, 4)
     }
   }
 }
@@ -114,7 +114,7 @@ const checkPer = async resourceId => {
   }
   const request = { busiFlag: 'dashboard', resourceTable: 'core' }
   await interactiveStore.setInteractive(request)
-  return check(wsCache.get('panel-weight'), resourceId, 4)
+  return check(wsCache.get(getStoragePrefix('panel-weight')), resourceId, 4)
 }
 
 const mobileConfig = ref(false)
@@ -143,7 +143,7 @@ let p = null
 const XpackLoaded = () => p(true)
 
 const doUseCache = flag => {
-  const canvasCache = wsCache.get('DE-DV-CATCH-' + state.resourceId)
+  const canvasCache = wsCache.get(getStoragePrefix('DE-DV-CATCH-' + state.resourceId))
   if (flag && canvasCache) {
     const canvasCacheSeries = deepCopy(canvasCache)
     snapshotStore.snapshotPublish(canvasCacheSeries)
@@ -155,7 +155,7 @@ const doUseCache = flag => {
     }, 1500)
   } else {
     initLocalCanvasData()
-    wsCache.delete('DE-DV-CATCH-' + state.resourceId)
+    wsCache.delete(getStoragePrefix('DE-DV-CATCH-' + state.resourceId))
   }
 }
 
@@ -215,7 +215,7 @@ onMounted(async () => {
   state.resourceId = resourceId
   if (resourceId) {
     dataInitState.value = false
-    const canvasCache = wsCache.get('DE-DV-CATCH-' + resourceId)
+    const canvasCache = wsCache.get(getStoragePrefix('DE-DV-CATCH-' + resourceId))
     if (canvasCache) {
       canvasCacheOutRef.value?.dialogInit({ canvasType: 'dashboard', resourceId: resourceId })
     } else {
@@ -247,7 +247,7 @@ onMounted(async () => {
       dvMainStore.createInit('dashboard', null, pid, watermarkBaseInfo, preName)
       // 从模板新建
       if (createType === 'template') {
-        wsCache.delete('de-template-data')
+        wsCache.delete(getStoragePrefix('de-template-data'))
         dvMainStore.setComponentData(deTemplateData['componentData'])
         dvMainStore.setCanvasStyle(deTemplateData['canvasStyleData'])
         dvMainStore.setCanvasViewInfo(deTemplateData['canvasViewInfo'])

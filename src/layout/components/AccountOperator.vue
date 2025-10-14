@@ -6,6 +6,7 @@ import { Icon } from '@/components/icon-custom'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { logoutApi } from '@/api/login'
 import { logoutHandler } from '@/utils/logout'
+import { getStoragePrefix } from '@/utils/utils'
 import { XpackComponent } from '@/components/plugin'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useEmitt } from '@/hooks/web/useEmitt'
@@ -98,7 +99,7 @@ const openPopover = () => {
 
 if (uid.value === '1') {
   linkLoaded([{ id: 4, link: '/sys-setting/parameter', label: t('commons.system_setting') }])
-  const desktop = wsCache.get('app.desktop')
+  const desktop = wsCache.get(getStoragePrefix('app.desktop'))
   if (!desktop) {
     linkLoaded([{ id: 2, link: '/modify-pwd/index', label: t('user.change_password') }])
   }

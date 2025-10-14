@@ -159,7 +159,7 @@ import { deepCopy } from '@/utils/utils'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import { useCache } from '@/hooks/web/useCache'
 import { isDesktop } from '@/utils/ModelUtil'
-import { filterFreeFolder } from '@/utils/utils'
+import { filterFreeFolder, getStoragePrefix } from '@/utils/utils'
 
 const { wsCache } = useCache('localStorage')
 const { t } = useI18n()
@@ -188,7 +188,7 @@ const props = defineProps({
 })
 
 const { curCanvasType } = toRefs(props)
-const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
 
 const dvPreName = computed(() =>
   curCanvasType.value === 'dashboard'

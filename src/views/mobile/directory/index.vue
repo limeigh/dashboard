@@ -11,6 +11,7 @@ import { storeToRefs } from 'pinia'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { useCache } from '@/hooks/web/useCache'
 import treeSort from '@/utils/treeSortUtils'
+import { getStoragePrefix } from '@/utils/utils'
 import { BusiTreeRequest } from '@/models/tree/TreeNode'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import DashboardCell from '@/views/mobile/components/DashboardCell.vue'
@@ -72,10 +73,10 @@ const onClickPanel = () => {
 const router = useRouter()
 
 const handleCellClick = ele => {
-  wsCache.set('directName', directName.value)
-  wsCache.set('activeDirectName', activeDirectName.value)
-  wsCache.set('activeTabbar', 'direct')
-  wsCache.set('directId', directId.value)
+  wsCache.set(getStoragePrefix('directName'), directName.value)
+  wsCache.set(getStoragePrefix('activeDirectName'), activeDirectName.value)
+  wsCache.set(getStoragePrefix('activeTabbar'), 'direct')
+  wsCache.set(getStoragePrefix('directId'), directId.value)
   router.push({
     path: '/panel/mobile',
     query: {
@@ -176,24 +177,24 @@ const getTree = async () => {
 }
 
 const setSortType = () => {
-  const type = wsCache.get('mobile-sort-type')
+  const type = wsCache.get(getStoragePrefix('mobile-sort-type'))
   sortTypeChange(type || curSortType.value)
 }
 
 onUnmounted(() => {
-  wsCache.set('mobile-sort-type', curSortType.value)
+  wsCache.set(getStoragePrefix('mobile-sort-type'), curSortType.value)
 })
 
 onMounted(() => {
   getTree()
-  activeDirectName.value = wsCache.get('activeDirectName')
-  if (wsCache.get('activeTabbar') !== 'direct' || !activeDirectName.value) return
-  directName.value = wsCache.get('directName')
-  directId.value = wsCache.get('directId')
-  wsCache.set('directName', [])
-  wsCache.set('activeDirectName', '')
-  wsCache.set('directId', [])
-  wsCache.set('activeTabbar', '')
+  activeDirectName.value = wsCache.get(getStoragePrefix('activeDirectName'))
+  if (wsCache.get(getStoragePrefix('activeTabbar')) !== 'direct' || !activeDirectName.value) return
+  directName.value = wsCache.get(getStoragePrefix('directName'))
+  directId.value = wsCache.get(getStoragePrefix('directId'))
+  wsCache.set(getStoragePrefix('directName'), [])
+  wsCache.set(getStoragePrefix('activeDirectName'), '')
+  wsCache.set(getStoragePrefix('directId'), [])
+  wsCache.set(getStoragePrefix('activeTabbar'), '')
 })
 </script>
 

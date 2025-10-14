@@ -3,6 +3,7 @@ import icon_succeed_colorful from '@/assets/svg/icon_succeed_colorful.svg'
 import icon_dataset from '@/assets/svg/icon_dataset.svg'
 import { ref } from 'vue'
 import { propTypes } from '@/utils/propTypes'
+import { getStoragePrefix } from '@/utils/utils'
 import { useCache } from '@/hooks/web/useCache'
 import { setShowFinishPage } from '@/api/datasource'
 import { useI18n } from '@/hooks/web/useI18n'
@@ -26,10 +27,10 @@ const continueCreating = () => {
   emits('continueCreating')
 }
 
-checked.value = wsCache.get('ds-create-success') || false
+checked.value = wsCache.get(getStoragePrefix('ds-create-success')) || false
 const handleChange = (val: boolean) => {
   setShowFinishPage({})
-  wsCache.set('ds-create-success', val)
+  wsCache.set(getStoragePrefix('ds-create-success'), val)
   emits('backToDatasourceList')
 }
 </script>

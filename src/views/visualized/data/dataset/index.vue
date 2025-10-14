@@ -82,7 +82,7 @@ import { XpackComponent } from '@/components/plugin'
 import { useCache } from '@/hooks/web/useCache'
 import { RefreshLeft } from '@element-plus/icons-vue'
 import { iconFieldMap } from '@/components/icon-group/field-list'
-import { exportPermission, isFreeFolder } from '@/utils/utils'
+import { exportPermission, isFreeFolder, getStoragePrefix } from '@/utils/utils'
 const { t } = useI18n()
 const interactiveStore = interactiveStoreWithOut()
 const { wsCache } = useCache()
@@ -141,13 +141,13 @@ const state = reactive({
 const resourceGroupOpt = ref()
 const curCanvasType = ref('')
 const mounted = ref(false)
-const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
 const isIframe = computed(() => appStore.getIsIframe)
 const exportPermissions = computed(() => exportPermission(nodeInfo.weight, nodeInfo.ext))
 const createPanel = path => {
   const baseUrl = `#/${path}?opt=create&id=${nodeInfo.id}`
-  wsCache.set('dataset-info-id', nodeInfo.id)
+  wsCache.set(getStoragePrefix('dataset-info-id'), nodeInfo.id)
   window.open(baseUrl, openType)
 }
 
@@ -162,7 +162,7 @@ const originResourceTree = shallowRef([])
 const handleSortTypeChange = sortType => {
   state.datasetTree = treeSort(originResourceTree.value, sortType)
   state.curSortType = sortType
-  wsCache.set('TreeSort-dataset', state.curSortType)
+  wsCache.set(getStoragePrefix('TreeSort-dataset'), state.curSortType)
 }
 
 const sortTypeChange = sortType => {
@@ -294,8 +294,8 @@ const dtLoading = ref(false)
 const isCreated = ref(false)
 const getData = () => {
   dtLoading.value = true
-  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
-  curSortType = wsCache.get('TreeSort-dataset') ?? curSortType
+  let curSortType = sortList[Number(wsCache.get(getStoragePrefix('TreeSort-backend'))) ?? 1].value
+  curSortType = wsCache.get(getStoragePrefix('TreeSort-dataset')) ?? curSortType
   const request = { busiFlag: 'dataset' } as BusiTreeRequest
   interactiveStore
     .setInteractive(request)
@@ -347,11 +347,11 @@ const dfsDatasetTree = (ds, id) => {
 }
 
 onBeforeMount(() => {
-  const paramId = wsCache.get('dataset-info-id') || route.params.id
+  const paramId = wsCache.get(getStoragePrefix('dataset-info-id')) || route.params.id
   nodeInfo.id = (paramId as string) || (route.query.id as string) || ''
-  wsCache.delete('dataset-info-id')
-  wsCache.delete('db-info-id')
-  wsCache.delete('dv-info-id')
+  wsCache.delete(getStoragePrefix('dataset-info-id'))
+  wsCache.delete(getStoragePrefix('db-info-id'))
+  wsCache.delete(getStoragePrefix('dv-info-id'))
   loadInit()
   getData()
   getLimit()
@@ -736,7 +736,7 @@ const sortList = [
 ]
 
 const loadInit = () => {
-  const historyTreeSort = wsCache.get('TreeSort-dataset')
+  const historyTreeSort = wsCache.get(getStoragePrefix('TreeSort-dataset'))
   if (historyTreeSort) {
     state.curSortType = historyTreeSort
   }

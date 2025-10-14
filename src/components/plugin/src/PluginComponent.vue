@@ -12,7 +12,7 @@ import router from '@/router'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import request from '@/config/axios'
 const { wsCache } = useCache()
-import { isNull } from '@/utils/utils'
+import { isNull, getStoragePrefix } from '@/utils/utils'
 
 const plugin = ref()
 
@@ -58,7 +58,7 @@ const getModuleName = () => {
 const loadComponent = () => {
   const moduleName = getModuleName()
   loading.value = true
-  const byteArray = wsCache.get(`de-plugin-proxy-${moduleName}`)
+  const byteArray = wsCache.get(getStoragePrefix(`de-plugin-proxy-${moduleName}`))
   if (byteArray) {
     importProxy(JSON.parse(byteArray))
     loading.value = false
@@ -88,7 +88,7 @@ const storeCacheProxy = byteArray => {
     result.push([...item])
   })
   const moduleName = getModuleName()
-  wsCache.set(`de-plugin-proxy-${moduleName}`, JSON.stringify(result))
+  wsCache.set(getStoragePrefix(`de-plugin-proxy-${moduleName}`), JSON.stringify(result))
 }
 const pluginProxy = ref(null)
 const invokeMethod = param => {
@@ -102,12 +102,12 @@ const invokeMethod = param => {
 onMounted(async () => {
   const key = 'xpack-model-distributed'
   let distributed = false
-  if (wsCache.get(key) === null) {
+  if (wsCache.get(getStoragePrefix(key)) === null) {
     const res = await xpackModelApi()
-    wsCache.set('xpack-model-distributed', isNull(res.data) ? 'null' : res.data)
+    wsCache.set(getStoragePrefix('xpack-model-distributed'), isNull(res.data) ? 'null' : res.data)
     distributed = res.data
   } else {
-    distributed = wsCache.get(key)
+    distributed = wsCache.get(getStoragePrefix(key))
   }
   if (isNull(distributed)) {
     setTimeout(() => {

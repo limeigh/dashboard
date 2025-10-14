@@ -3,6 +3,7 @@ import icon_sideFold_outlined from '@/assets/svg/icon_side-fold_outlined.svg'
 import icon_sideExpand_outlined from '@/assets/svg/icon_side-expand_outlined.svg'
 import { useCache } from '@/hooks/web/useCache'
 import { useEmitt } from '@/hooks/web/useEmitt'
+import { getStoragePrefix } from '@/utils/utils'
 import { ref, onMounted } from 'vue'
 const props = defineProps({
   isCollapse: Boolean
@@ -19,7 +20,7 @@ const setCollapse = () => {
 const width = ref(280)
 const { wsCache } = useCache('localStorage')
 const setWidth = () => {
-  const num = wsCache.get('current-collapse_bar')
+  const num = wsCache.get(getStoragePrefix('current-collapse_bar'))
   if (!num) return
   width.value = num
 }

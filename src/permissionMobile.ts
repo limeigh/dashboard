@@ -8,6 +8,7 @@ import { usePermissionStoreWithOut } from '@/store/modules/permission'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { useLinkStoreWithOut } from '@/store/modules/link'
+import { getStoragePrefix } from '@/utils/utils'
 
 const appearanceStore = useAppearanceStoreWithOut()
 const permissionStore = usePermissionStoreWithOut()
@@ -27,7 +28,7 @@ router.beforeEach(async (to, _, next) => {
   await appearanceStore.setAppearance()
   if (to.name === 'link') {
     next()
-  } else if (wsCache.get('user.token')) {
+  } else if (wsCache.get(getStoragePrefix('user.token'))) {
     linkStore.setLinkToken('')
     if (!userStore.getUid) {
       await userStore.setUser()

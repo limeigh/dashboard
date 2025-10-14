@@ -16,7 +16,7 @@ import {
   saveCanvas
 } from '@/api/visualization/dataVisualization'
 import { ElMessage } from 'element-plus-secondary'
-import { cutTargetTree, filterFreeFolder, nameTrim } from '@/utils/utils'
+import { cutTargetTree, filterFreeFolder, nameTrim, getStoragePrefix } from '@/utils/utils'
 const props = defineProps({
   curCanvasType: {
     type: String,
@@ -299,7 +299,8 @@ const saveResource = () => {
             emits('finish')
             ElMessage.success(t('visualization.save_success'))
             if (cmd.value === 'copy') {
-              const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+              const openType =
+                wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
               const baseUrl =
                 curCanvasType.value === 'dataV'
                   ? '#/dvCanvas?opt=copy&dvId='

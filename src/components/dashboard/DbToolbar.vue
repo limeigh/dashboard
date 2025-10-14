@@ -21,7 +21,7 @@ import dvCancelPublish from '@/assets/svg/icon_undo_outlined.svg'
 import { ElIcon, ElMessage, ElMessageBox } from 'element-plus-secondary'
 import eventBus from '@/utils/eventBus'
 import { useEmbedded } from '@/store/modules/embedded'
-import { deepCopy } from '@/utils/utils'
+import { deepCopy, getStoragePrefix } from '@/utils/utils'
 import { nextTick, reactive, ref, computed, onBeforeUnmount, onMounted } from 'vue'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { useAppStoreWithOut } from '@/store/modules/app'
@@ -91,7 +91,7 @@ const outerParamsSetRef = ref(null)
 const { wsCache } = useCache('localStorage')
 const userStore = useUserStoreWithOut()
 const isIframe = computed(() => appStore.getIsIframe)
-const desktop = wsCache.get('app.desktop')
+const desktop = wsCache.get(getStoragePrefix('app.desktop'))
 const emits = defineEmits(['recoverToPublished'])
 
 defineProps({
@@ -210,7 +210,11 @@ const publishStatusChange = status => {
 }
 
 const saveCanvasWithCheck = (withPublish = false, status?) => {
-  if (userStore.getOid && wsCache.get('user.oid') && userStore.getOid !== wsCache.get('user.oid')) {
+  if (
+    userStore.getOid &&
+    wsCache.get(getStoragePrefix('user.oid')) &&
+    userStore.getOid !== wsCache.get(getStoragePrefix('user.oid'))
+  ) {
     ElMessageBox.confirm(t('components.from_other_organizations'), {
       confirmButtonType: 'primary',
       type: 'warning',
@@ -250,7 +254,7 @@ const saveCanvasWithCheck = (withPublish = false, status?) => {
 }
 
 const saveResource = (checkParams?) => {
-  wsCache.delete('DE-DV-CATCH-' + dvInfo.value.id)
+  wsCache.delete(getStoragePrefix('DE-DV-CATCH-' + dvInfo.value.id))
   if (styleChangeTimes.value > 0 || checkParams.withPublish) {
     dvMainStore.matrixSizeAdaptor()
     queryList.value.forEach(ele => {
@@ -338,8 +342,8 @@ const backHandler = (url: string) => {
     openHandler.value.invokeMethod(pm)
     return
   }
-  wsCache.delete('DE-DV-CATCH-' + dvInfo.value.id)
-  wsCache.set('db-info-id', dvInfo.value.id)
+  wsCache.delete(getStoragePrefix('DE-DV-CATCH-' + dvInfo.value.id))
+  wsCache.set(getStoragePrefix('db-info-id'), dvInfo.value.id)
   if (!!history.state.back) {
     history.back()
   } else {

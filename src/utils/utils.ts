@@ -235,11 +235,11 @@ export const getBrowserLocale = () => {
   return language
 }
 export const getLocale = () => {
-  return wsCache.get('user.language') || getBrowserLocale() || 'zh-CN'
+  return wsCache.get(getStoragePrefix('user.language')) || getBrowserLocale() || 'zh-CN'
 }
 
 export const isFreeFolder = (node, flag) => {
-  const oid = wsCache.get('user.oid')
+  const oid = wsCache.get(getStoragePrefix('user.oid'))
   if (!oid) {
     return false
   }
@@ -259,7 +259,7 @@ export const isFreeFolder = (node, flag) => {
 export const filterFreeFolder = (list, flagText) => {
   const flagArray = ['dashboard', 'dataV', 'dataset', 'datasource']
   const index = flagArray.findIndex(item => item === flagText)
-  const oid = wsCache.get('user.oid')
+  const oid = wsCache.get(getStoragePrefix('user.oid'))
   if (!oid || index < 0) {
     return
   }
@@ -306,4 +306,9 @@ export const getActiveCategories = contents => {
     })
   }
   return new Set(result)
+}
+
+export const getStoragePrefix = key => {
+  const prefix = import.meta.env.VITE_STORAGE_PREFIX || ''
+  return `${prefix}dataease2-${key}`
 }

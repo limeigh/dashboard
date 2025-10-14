@@ -54,6 +54,7 @@ import { iconChartMap } from '@/components/icon-group/chart-list'
 import { iconFieldMap } from '@/components/icon-group/field-list'
 import treeSort from '@/utils/treeSortUtils'
 import { useCache } from '@/hooks/web/useCache'
+import { getStoragePrefix } from '@/utils/utils'
 
 const { t } = useI18n()
 const { wsCache } = useCache()
@@ -943,7 +944,7 @@ const initDataset = () => {
 }
 
 const sortTypeChange = arr => {
-  const sortType = wsCache.get('TreeSort-dataset') || 'time_desc'
+  const sortType = wsCache.get(getStoragePrefix('TreeSort-dataset')) || 'time_desc'
   datasetTree.value = treeSort(arr, sortType)
 }
 

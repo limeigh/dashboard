@@ -53,6 +53,7 @@ import type { BusiTreeNode } from '@/models/tree/TreeNode'
 import CreatDsGroup from './CreatDsGroup.vue'
 import { guid, getFieldName, timeTypes, type DataSource } from './util'
 import { fieldType } from '@/utils/attr'
+import { getStoragePrefix } from '@/utils/utils'
 import { cancelMap } from '@/config/axios/service'
 import { useEmbedded } from '@/store/modules/embedded'
 import { useAppStoreWithOut } from '@/store/modules/app'
@@ -259,7 +260,7 @@ const getDsName = (id: string) => {
 }
 
 const pushDataset = () => {
-  wsCache.set(`dataset-info-id`, nodeInfo.id)
+  wsCache.set(getStoragePrefix(`dataset-info-id`), nodeInfo.id)
   if (appStore.isDataEaseBi) {
     embeddedStore.clearState()
     useEmitt().emitter.emit('changeCurrentComponent', 'Dataset')

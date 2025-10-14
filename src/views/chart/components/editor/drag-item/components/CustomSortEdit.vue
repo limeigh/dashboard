@@ -4,6 +4,7 @@ import draggable from 'vuedraggable'
 import { getFieldData, getDrillFieldData } from '@/api/chart'
 import { reactive, watch, ref } from 'vue'
 import { useCache } from '@/hooks/web/useCache'
+import { getStoragePrefix } from '@/utils/utils'
 
 const { wsCache } = useCache()
 const loading = ref(false)
@@ -47,7 +48,7 @@ const init = () => {
   const chart = props.chart
   if (!chart.chartExtRequest) {
     chart.chartExtRequest = {
-      user: wsCache.get('user.uid')
+      user: wsCache.get(getStoragePrefix('user.uid'))
     }
   }
   const param = {

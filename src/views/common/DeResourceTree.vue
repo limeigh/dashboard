@@ -53,7 +53,7 @@ import { XpackComponent } from '@/components/plugin'
 import treeSort, { treeParentWeight } from '@/utils/treeSortUtils'
 import router from '@/router'
 import { cancelRequestBatch } from '@/config/axios/service'
-import { isFreeFolder } from '@/utils/utils'
+import { isFreeFolder, getStoragePrefix } from '@/utils/utils'
 const { wsCache } = useCache()
 
 const dvMainStore = dvMainStoreWithOut()
@@ -233,10 +233,12 @@ const menuList = [
   }
 ]
 
-const infoId = wsCache.get(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
+const infoId = wsCache.get(
+  getStoragePrefix(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
+)
 const routerDvId = router.currentRoute.value.query.dvId
 const dvId = embeddedStore.dvId || infoId || routerDvId
-wsCache.delete(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
+wsCache.delete(getStoragePrefix(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id'))
 if (dvId && showPosition.value === 'preview') {
   selectedNodeKey.value = dvId
   returnMounted.value = true
@@ -335,8 +337,8 @@ const getTree = async () => {
   ) {
     dvMainStore.resetDvInfo()
   }
-  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
-  curSortType = wsCache.get(`TreeSort-${curCanvasType.value}`) ?? curSortType
+  let curSortType = sortList[Number(wsCache.get(getStoragePrefix('TreeSort-backend'))) ?? 1].value
+  curSortType = wsCache.get(getStoragePrefix(`TreeSort-${curCanvasType.value}`)) ?? curSortType
   if (nodeData.length && nodeData[0]['id'] === '0' && nodeData[0]['name'] === 'root') {
     state.originResourceTree = nodeData[0]['children'] || []
     sortTypeChange(curSortType)
@@ -382,7 +384,7 @@ const afterTreeInit = () => {
 }
 
 const copyLoading = ref(false)
-const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
 const emit = defineEmits(['nodeClick'])
 
 const operation = (cmd: string, data: BusiTreeNode, nodeType: string) => {
@@ -534,7 +536,7 @@ const resourceOptFinish = () => {
 
 const resourceCreateFinish = templateData => {
   // do create
-  wsCache.set(`de-template-data`, JSON.stringify(templateData))
+  wsCache.set(getStoragePrefix(`de-template-data`), JSON.stringify(templateData))
   const baseUrl =
     curCanvasType.value === 'dataV'
       ? '#/dvCanvas?opt=create&createType=template'
@@ -614,7 +616,7 @@ const sortTypeTip = computed(() => {
 const handleSortTypeChange = sortType => {
   state.resourceTree = treeSort(state.originResourceTree, sortType)
   state.curSortType = sortType
-  wsCache.set('TreeSort-' + curCanvasType.value, state.curSortType)
+  wsCache.set(getStoragePrefix('TreeSort-' + curCanvasType.value), state.curSortType)
 }
 
 const sortTypeChange = sortType => {
@@ -648,7 +650,7 @@ const initOpenHandler = newWindow => {
 }
 
 const loadInit = () => {
-  const historyTreeSort = wsCache.get('TreeSort-' + curCanvasType.value)
+  const historyTreeSort = wsCache.get(getStoragePrefix('TreeSort-' + curCanvasType.value))
   if (historyTreeSort) {
     state.curSortType = historyTreeSort
   }

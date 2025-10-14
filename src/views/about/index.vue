@@ -11,6 +11,7 @@ import { useEmitt } from '@/hooks/web/useEmitt'
 import { useCache } from '@/hooks/web/useCache'
 import { logoutApi } from '@/api/login'
 import { logoutHandler } from '@/utils/logout'
+import { getStoragePrefix } from '@/utils/utils'
 const dialogVisible = ref(false)
 const { wsCache } = useCache('localStorage')
 const { t } = useI18n()
@@ -56,7 +57,7 @@ const beforeUpload = file => {
 
 const support = () => {
   const url = 'https://support.fit2cloud.com/'
-  const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+  const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
   window.open(url, openType)
 }
 const back2Community = () => {

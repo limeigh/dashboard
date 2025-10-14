@@ -285,7 +285,7 @@ import {
 import EmptyBackground from '@/components/empty-background/src/EmptyBackground.vue'
 import { getGeoJsonFile } from '@/views/chart/components/js/util'
 import { cloneDeep, debounce } from 'lodash-es'
-import { setColorName } from '@/utils/utils'
+import { setColorName, getStoragePrefix } from '@/utils/utils'
 import GeometryEdit from './GeometryEdit.vue'
 import { useCache } from '@/hooks/web/useCache'
 import { ElMessage, ElMessageBox, FormRules } from 'element-plus-secondary'
@@ -360,7 +360,7 @@ const filterResourceNode = (value: string, data) => {
 
 const loadTreeData = (cache?: boolean) => {
   const key = 'de-area-tree'
-  const result = wsCache.get(key)
+  const result = wsCache.get(getStoragePrefix(key))
   if (result && cache) {
     treeData.value = result
     return
@@ -369,7 +369,7 @@ const loadTreeData = (cache?: boolean) => {
     .then(res => {
       const root = res.data
       treeData.value = [root]
-      wsCache.set(key, treeData.value)
+      wsCache.set(getStoragePrefix(key), treeData.value)
     })
     .catch(e => {
       console.error(e)

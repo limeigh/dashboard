@@ -1,6 +1,6 @@
 import request from '@/config/axios'
 import { useCache } from '@/hooks/web/useCache'
-import { isInIframe } from '@/utils/utils'
+import { isInIframe, getStoragePrefix } from '@/utils/utils'
 const { wsCache } = useCache()
 
 export interface TicketValidVO {
@@ -72,7 +72,7 @@ class ShareProxy {
     const inIframe = isInIframe()
     const ticket = this.getTicket()
     const param = { uuid, ciphertext: null, inIframe, ticket }
-    const ciphertext = wsCache.get(`link-${uuid}`)
+    const ciphertext = wsCache.get(getStoragePrefix(`link-${uuid}`))
     if (ciphertext) {
       param['ciphertext'] = ciphertext
     }

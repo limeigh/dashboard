@@ -1,3 +1,5 @@
+import { getStoragePrefix } from '@/utils/utils'
+
 const suffix = `${import.meta.env.VITE_VERSION}-dataease`
 
 const dom = document.querySelector('head')
@@ -121,8 +123,8 @@ const setupAll = async (
   const getDefaultSort = await import('@/api/common')
   const defaultSort = await getDefaultSort.getDefaultSettings()
   const { wsCache } = useCache()
-  wsCache.set('TreeSort-backend', defaultSort['basic.defaultSort'] ?? '1')
-  wsCache.set('open-backend', defaultSort['basic.defaultOpen'] ?? '0')
+  wsCache.set(getStoragePrefix('TreeSort-backend'), defaultSort['basic.defaultSort'] ?? '1')
+  wsCache.set(getStoragePrefix('open-backend'), defaultSort['basic.defaultOpen'] ?? '0')
   app.mount(dom)
   return app
 }

@@ -4,6 +4,7 @@ import { initCanvasData, onInitReady } from '@/utils/canvasUtils'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useEmbedded } from '@/store/modules/embedded'
 import { check } from '@/utils/CrossPermission'
+import { getStoragePrefix } from '@/utils/utils'
 import { useCache } from '@/hooks/web/useCache'
 import { getOuterParamsInfo } from '@/api/visualization/outerParams'
 import { ElMessage } from 'element-plus-secondary'
@@ -59,7 +60,7 @@ const checkPer = async resourceId => {
   const request = { busiFlag: embeddedParams.busiFlag, resourceTable: 'core' }
   await interactiveStore.setInteractive(request)
   const key = embeddedParams.busiFlag === 'dataV' ? 'screen-weight' : 'panel-weight'
-  return check(wsCache.get(key), resourceId, 1)
+  return check(wsCache.get(getStoragePrefix(key)), resourceId, 1)
 }
 onBeforeMount(async () => {
   const checkResult = await checkPer(embeddedParams.dvId)

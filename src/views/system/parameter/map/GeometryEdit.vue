@@ -14,6 +14,7 @@ import type {
 import request from '@/config/axios'
 import { GeometryFrom } from './interface'
 import { useCache } from '@/hooks/web/useCache'
+import { getStoragePrefix } from '@/utils/utils'
 const { wsCache } = useCache()
 const { t } = useI18n()
 const dialogVisible = ref(false)
@@ -98,7 +99,7 @@ const rule = reactive<FormRules>({
 
 const edit = (pid?: string) => {
   const key = 'de-area-tree'
-  state.treeData = wsCache.get(key)
+  state.treeData = wsCache.get(getStoragePrefix(key))
   state.form.pid = pid
   state.form.code = null
   state.form.name = null

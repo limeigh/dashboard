@@ -25,6 +25,7 @@ import ShareHandler from '@/views/share/share/ShareHandler.vue'
 import { useAppStoreWithOut } from '@/store/modules/app'
 import { useEmbedded } from '@/store/modules/embedded'
 import { XpackComponent } from '@/components/plugin'
+import { getStoragePrefix } from '@/utils/utils'
 const userStore = useUserStoreWithOut()
 const { resolve } = useRouter()
 const { t } = useI18n()
@@ -43,7 +44,7 @@ defineProps({
     default: false
   }
 })
-const desktop = wsCache.get('app.desktop')
+const desktop = wsCache.get(getStoragePrefix('app.desktop'))
 const panelKeyword = ref()
 const activeName = ref('recent')
 const activeCommand = ref('all_types')
@@ -99,7 +100,7 @@ const getBusiListWithPermission = () => {
 const triggerFilterPanel = () => {
   loadTableData()
 }
-const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
 const preview = (id, disabled = false) => {
   if (!disabled) {
     const routeUrl = resolve({

@@ -13,6 +13,7 @@ import { useAppStoreWithOut } from '@/store/modules/app'
 import { useRouter } from 'vue-router_2'
 import { useCache } from '@/hooks/web/useCache'
 import { XpackComponent } from '@/components/plugin'
+import { getStoragePrefix } from '@/utils/utils'
 const snapshotStore = snapshotStoreWithOut()
 const dvMainStore = dvMainStoreWithOut()
 const { t } = useI18n()
@@ -66,7 +67,7 @@ const addDsWindow = () => {
   const path =
     embeddedStore.getToken && appStore.getIsIframe ? 'dataset-embedded-form' : '/dataset-form'
   let routeData = router.resolve(path)
-  const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+  const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
   const newWindow = window.open(routeData.href, openType)
   initOpenHandler(newWindow)
 }

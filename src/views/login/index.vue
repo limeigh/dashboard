@@ -17,7 +17,7 @@ import { XpackComponent } from '@/components/plugin'
 import { logoutHandler } from '@/utils/logout'
 import DeImage from '@/assets/login-desc-de.png'
 import elementResizeDetectorMaker from 'element-resize-detector'
-import { cleanPlatformFlag } from '@/utils/utils'
+import { cleanPlatformFlag, getStoragePrefix } from '@/utils/utils'
 import xss from 'xss'
 const { wsCache } = useCache()
 const appStore = useAppStoreWithOut()
@@ -79,9 +79,9 @@ const handleLogin = () => {
     if (valid) {
       const name = state.loginForm.username.trim()
       const pwd = state.loginForm.password
-      if (!wsCache.get(appStore.getDekey)) {
+      if (!wsCache.get(getStoragePrefix(appStore.getDekey))) {
         const res = await queryDekey()
-        wsCache.set(appStore.getDekey, res.data)
+        wsCache.set(getStoragePrefix(appStore.getDekey), res.data)
       }
       const param = { name: rsaEncryp(name), pwd: rsaEncryp(pwd) }
       const isLdap = activeName.value === 'ldap'
@@ -232,16 +232,16 @@ const handlerFail = () => {
 onMounted(async () => {
   loadArrearance()
   duringLogin.value = false
-  if (localStorage.getItem('DE-GATEWAY-FLAG')) {
-    const msg = localStorage.getItem('DE-GATEWAY-FLAG')
+  if (localStorage.getItem(getStoragePrefix('DE-GATEWAY-FLAG'))) {
+    const msg = localStorage.getItem(getStoragePrefix('DE-GATEWAY-FLAG'))
     loginErrorMsg.value = decodeURIComponent(msg)
     showLoginErrorMsg()
     localStorage.removeItem('DE-GATEWAY-FLAG')
     logoutHandler(true)
   }
-  if (!wsCache.get(appStore.getDekey)) {
+  if (!wsCache.get(getStoragePrefix(appStore.getDekey))) {
     queryDekey().then(res => {
-      wsCache.set(appStore.getDekey, res?.data)
+      wsCache.set(getStoragePrefix(appStore.getDekey), res?.data)
     })
   }
   const erd = elementResizeDetectorMaker()

@@ -9,6 +9,7 @@ import { usePageLoading } from '@/hooks/web/usePageLoading'
 import { getRoleRouters } from '@/api/common'
 import { useCache } from '@/hooks/web/useCache'
 import { isMobile, checkPlatform, isLarkPlatform, isPlatformClient } from '@/utils/utils'
+import { getStoragePrefix } from '@/utils/utils'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { useEmbedded } from '@/store/modules/embedded'
@@ -30,7 +31,7 @@ router.beforeEach(async (to, from, next) => {
   start()
   loadStart()
   const platform = checkPlatform()
-  let isDesktop = wsCache.get('app.desktop')
+  let isDesktop = wsCache.get(getStoragePrefix('app.desktop'))
   if (isDesktop === null) {
     try {
       await appStore.setAppModel()
@@ -63,7 +64,7 @@ router.beforeEach(async (to, from, next) => {
       }
       window.location.href = prefix + '/mobile.html#' + toPath + linkQuery
     } else if (
-      wsCache.get('user.token') ||
+      wsCache.get(getStoragePrefix('user.token')) ||
       isDesktop ||
       (!isPlatformClient() && !isLarkPlatform())
     ) {
@@ -79,9 +80,12 @@ router.beforeEach(async (to, from, next) => {
   await appearanceStore.setAppearance()
   await appearanceStore.setFontList()
   const defaultSort = (await getDefaultSettings()) || {}
-  wsCache.set('TreeSort-backend', defaultSort['basic.defaultSort'] ?? '1')
-  wsCache.set('open-backend', defaultSort['basic.defaultOpen'] ?? '0')
-  if ((wsCache.get('user.token') || isDesktop) && !to.path.startsWith('/de-link/')) {
+  wsCache.set(getStoragePrefix('TreeSort-backend'), defaultSort['basic.defaultSort'] ?? '1')
+  wsCache.set(getStoragePrefix('open-backend'), defaultSort['basic.defaultOpen'] ?? '0')
+  if (
+    (wsCache.get(getStoragePrefix('user.token')) || isDesktop) &&
+    !to.path.startsWith('/de-link/')
+  ) {
     if (!userStore.getUid) {
       await userStore.setUser()
     }

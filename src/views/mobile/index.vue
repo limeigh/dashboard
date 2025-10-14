@@ -19,6 +19,7 @@ import 'vant/es/tabbar/style'
 import 'vant/es/overlay/style'
 import 'vant/es/loading/style'
 import { useI18n } from '@/hooks/web/useI18n'
+import { getStoragePrefix } from '@/utils/utils'
 
 const activeTabbar = ref('home')
 const showLoading = ref(false)
@@ -27,7 +28,7 @@ const { wsCache } = useCache('sessionStorage')
 const { t } = useI18n()
 
 onBeforeMount(() => {
-  activeTabbar.value = wsCache.get('activeTabbar') || 'home'
+  activeTabbar.value = wsCache.get(getStoragePrefix('activeTabbar')) || 'home'
 })
 </script>
 

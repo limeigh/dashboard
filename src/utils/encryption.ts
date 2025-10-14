@@ -3,6 +3,7 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
 import { Base64 } from 'js-base64'
 import { useCache } from '@/hooks/web/useCache'
 import { useAppStoreWithOut } from '@/store/modules/app'
+import { getStoragePrefix } from '@/utils/utils'
 
 const appStore = useAppStoreWithOut()
 
@@ -24,7 +25,7 @@ const aesDecrypt = (word, keyStr) => {
 
 export const rsaEncryp = word => {
   const separator = Base64.encodeURI(rsaKey) + '='
-  const dekey = wsCache.get(appStore.getDekey)
+  const dekey = wsCache.get(getStoragePrefix(appStore.getDekey))
   const keyArray = dekey.split(separator)
   const k1 = keyArray[0]
   const k2 = keyArray[1]

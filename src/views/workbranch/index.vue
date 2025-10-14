@@ -24,6 +24,7 @@ import { useEmbedded } from '@/store/modules/embedded'
 import { useAppStoreWithOut } from '@/store/modules/app'
 import { useShareStoreWithOut } from '@/store/modules/share'
 import { queryShareBaseApi } from '@/api/visualization/dataVisualization'
+import { getStoragePrefix } from '@/utils/utils'
 
 const shareStore = useShareStoreWithOut()
 
@@ -40,7 +41,7 @@ const router = useRouter()
 const resourceCreateOpt = ref(null)
 const embeddedStore = useEmbedded()
 const appStore = useAppStoreWithOut()
-const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
 const quickCreationList = shallowRef([
   {
     icon: icon_dashboard_outlined,
@@ -214,7 +215,7 @@ const createDatasource = () => {
 }
 
 const templatePreview = previewId => {
-  wsCache.set(`template-preview-id`, previewId)
+  wsCache.set(getStoragePrefix(`template-preview-id`), previewId)
   toTemplateMarket()
 }
 

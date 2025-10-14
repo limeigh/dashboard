@@ -3,6 +3,7 @@ import router from '@/router'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useCache } from '@/hooks/web/useCache'
+import { getStoragePrefix } from '@/utils/utils'
 
 const { wsCache } = useCache()
 const permissionStore = usePermissionStoreWithOut()
@@ -65,6 +66,7 @@ const removeCache = () => {
       key === 'pwd-validity-period' ||
       key === 'xpack-model-distributed'
     ) {
+      wsCache.delete(getStoragePrefix(key))
       wsCache.delete(key)
     }
   })

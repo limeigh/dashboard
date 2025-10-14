@@ -22,6 +22,7 @@ import Icon from '@/components/icon-custom/src/Icon.vue'
 import { useCache } from '@/hooks/web/useCache'
 import { useLinkStoreWithOut } from '@/store/modules/link'
 import { useAppStoreWithOut } from '@/store/modules/app'
+import { getStoragePrefix } from '@/utils/utils'
 
 const { t } = useI18n()
 const state = reactive({
@@ -67,8 +68,8 @@ const handleClose = () => {
   clearInterval(timer)
 }
 const { wsCache } = useCache()
-const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
-const desktop = wsCache.get('app.desktop')
+const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
+const desktop = wsCache.get(getStoragePrefix('app.desktop'))
 
 onUnmounted(() => {
   clearInterval(timer)

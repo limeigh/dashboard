@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { store } from '../index'
 import { useCache } from '@/hooks/web/useCache'
+import { getStoragePrefix } from '@/utils/utils'
 const { wsCache } = useCache()
 import { modelApi } from '@/api/login'
 interface AppState {
@@ -58,7 +59,7 @@ export const useAppStore = defineStore('app', {
       const res = await modelApi()
       const data = res.data
       this.desktop = data
-      wsCache.set('app.desktop', this.desktop)
+      wsCache.set(getStoragePrefix('app.desktop'), this.desktop)
     },
     setSize(size: boolean) {
       this.size = size
@@ -84,7 +85,7 @@ export const useAppStore = defineStore('app', {
       this.dekey = dekey
     },
     setDesktop(desktop: boolean) {
-      wsCache.set('app.desktop', desktop)
+      wsCache.set(getStoragePrefix('app.desktop'), desktop)
       this.desktop = desktop
     }
   }

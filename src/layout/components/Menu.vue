@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { ElMenu } from 'element-plus-secondary'
 import { useRoute, useRouter } from 'vue-router_2'
 import { isExternal } from '@/utils/validate'
+import { getStoragePrefix } from '@/utils/utils'
 import { useCache } from '@/hooks/web/useCache'
 import MenuItem from './MenuItem.vue'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
@@ -30,7 +31,7 @@ const activeIndex = computed(() => {
 const menuSelect = (index: string, indexPath: string[]) => {
   //   自定义事件
   if (isExternal(index)) {
-    const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+    const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
     window.open(index, openType)
   } else {
     push(`${path.value}/${indexPath.join('/')}`)

@@ -47,6 +47,7 @@ import type { FormInstance, FormRules } from 'element-plus-secondary'
 import request from '@/config/axios'
 import { useAppStoreWithOut } from '@/store/modules/app'
 import { rsaEncryp } from '@/utils/encryption'
+import { getStoragePrefix } from '@/utils/utils'
 import { useCache } from '@/hooks/web/useCache'
 import { queryDekey } from '@/api/login'
 import { CustomPassword } from '@/components/custom-password'
@@ -83,7 +84,7 @@ const refresh = async (formEl: FormInstance | undefined) => {
       const ciphertext = rsaEncryp(text)
       request.post({ url: '/share/validate', data: { ciphertext } }).then(res => {
         if (res.data) {
-          wsCache.set(`link-${uuid}`, ciphertext)
+          wsCache.set(getStoragePrefix(`link-${uuid}`), ciphertext)
           window.location.reload()
         } else {
           msg.value = '密码错误'
@@ -127,10 +128,10 @@ const prepare = () => {
   }
 }
 onMounted(() => {
-  if (!wsCache.get(appStore.getDekey)) {
+  if (!wsCache.get(getStoragePrefix(appStore.getDekey))) {
     queryDekey()
       .then(res => {
-        wsCache.set(appStore.getDekey, res.data)
+        wsCache.set(getStoragePrefix(appStore.getDekey), res.data)
         prepare()
       })
       .finally(() => {

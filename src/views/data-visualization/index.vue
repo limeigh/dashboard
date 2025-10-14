@@ -39,7 +39,7 @@ import { watermarkFind } from '@/api/watermark'
 import { XpackComponent } from '@/components/plugin'
 import { Base64 } from 'js-base64'
 import CanvasCacheDialog from '@/components/visualization/CanvasCacheDialog.vue'
-import { deepCopy } from '@/utils/utils'
+import { deepCopy, getStoragePrefix } from '@/utils/utils'
 import DvPreview from '@/views/data-visualization/DvPreview.vue'
 import DeRuler from '@/custom-component/common/DeRuler.vue'
 import { useRequestStoreWithOut } from '@/store/modules/request'
@@ -58,7 +58,7 @@ const eventCheck = e => {
     const opt = embeddedStore.opt || router.currentRoute.value.query.opt
     if (!(opt && opt === 'create')) {
       check(
-        wsCache.get('screen-weight'),
+        wsCache.get(getStoragePrefix('screen-weight')),
         embeddedStore.dvId || (router.currentRoute.value.query.dvId as string),
         4
       )
@@ -279,7 +279,7 @@ const initScroll = () => {
   })
 }
 const doUseCache = flag => {
-  const canvasCache = wsCache.get('DE-DV-CATCH-' + state.resourceId)
+  const canvasCache = wsCache.get(getStoragePrefix('DE-DV-CATCH-' + state.resourceId))
   if (flag && canvasCache) {
     const canvasCacheSeries = deepCopy(canvasCache)
     snapshotStore.snapshotPublish(canvasCacheSeries)
@@ -296,7 +296,7 @@ const doUseCache = flag => {
     initLocalCanvasData(() => {
       // do init
     })
-    wsCache.delete('DE-DV-CATCH-' + state.resourceId)
+    wsCache.delete(getStoragePrefix('DE-DV-CATCH-' + state.resourceId))
   }
 }
 
@@ -355,7 +355,7 @@ const checkPer = async resourceId => {
   }
   const request = { busiFlag: 'dataV', resourceTable: 'core' }
   await interactiveStore.setInteractive(request)
-  return check(wsCache.get('screen-weight'), resourceId, 4)
+  return check(wsCache.get(getStoragePrefix('screen-weight')), resourceId, 4)
 }
 // 目标校验： 需要校验targetSourceId 是否是当前可视化资源ID
 const winMsgHandle = event => {
@@ -406,7 +406,7 @@ onMounted(async () => {
   state.opt = opt
   if (dvId) {
     state.canvasInitStatus = false
-    const canvasCache = wsCache.get('DE-DV-CATCH-' + dvId)
+    const canvasCache = wsCache.get(getStoragePrefix('DE-DV-CATCH-' + dvId))
     if (canvasCache) {
       canvasCacheOutRef.value?.dialogInit({ canvasType: 'dataV', resourceId: dvId })
     } else {

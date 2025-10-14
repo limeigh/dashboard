@@ -24,6 +24,7 @@ import { findBaseParams } from '@/api/aiComponent'
 import AiTips from '@/layout/components/AiTips.vue'
 import CopilotCom from '@/layout/components/Copilot.vue'
 import DesktopSetting from './DesktopSetting.vue'
+import { getStoragePrefix } from '@/utils/utils'
 
 const appearanceStore = useAppearanceStoreWithOut()
 const { push } = useRouter()
@@ -67,7 +68,7 @@ const showOverlayCopilot = ref(false)
 const handleSelect = (index: string) => {
   // 自定义事件
   if (isExternal(index)) {
-    const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+    const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
     window.open(index, openType)
   } else {
     push(index)
@@ -103,7 +104,7 @@ const initAiBase = async () => {
 }
 
 const aiTipsConfirm = () => {
-  wsCache.set('DE-AI-TIPS-CHECK', 'CHECKED')
+  wsCache.set(getStoragePrefix('DE-AI-TIPS-CHECK'), 'CHECKED')
   showOverlay.value = false
 }
 
@@ -112,7 +113,7 @@ const msgNoticePush = () => {
 }
 
 const copilotConfirm = () => {
-  wsCache.set('DE-COPILOT-TIPS-CHECK', 'CHECKED')
+  wsCache.set(getStoragePrefix('DE-COPILOT-TIPS-CHECK'), 'CHECKED')
   showOverlayCopilot.value = false
 }
 const badgeCount = ref('0')

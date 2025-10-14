@@ -2,6 +2,7 @@ import SockJS from 'sockjs-client/dist/sockjs.min.js'
 import Stomp from 'stompjs'
 import { useCache } from '@/hooks/web/useCache'
 import { useEmitt } from '@/hooks/web/useEmitt'
+import { getStoragePrefix } from '@/utils/utils'
 const { wsCache } = useCache()
 let stompClient: Stomp.Client
 import dev from '../../config/dev'
@@ -21,10 +22,12 @@ export default {
       }
     ]
     function isLoginStatus() {
-      if (wsCache.get('app.desktop')) {
+      if (wsCache.get(getStoragePrefix('app.desktop'))) {
         return true
       }
-      return wsCache.get('user.token') && wsCache.get('user.uid')
+      return (
+        wsCache.get(getStoragePrefix('user.token')) && wsCache.get(getStoragePrefix('user.uid'))
+      )
     }
 
     function connection() {
@@ -47,7 +50,9 @@ export default {
       if (!prefix.endsWith('/')) {
         prefix += '/'
       }
-      const userId = wsCache.get('app.desktop') ? 1 : wsCache.get('user.uid')
+      const userId = wsCache.get(getStoragePrefix('app.desktop'))
+        ? 1
+        : wsCache.get(getStoragePrefix('user.uid'))
       const socket = new SockJS(prefix + 'websocket?userId=' + userId)
       stompClient = Stomp.over(socket)
       const heads = {

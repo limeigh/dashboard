@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { store } from '../../index'
 import { dvMainStoreWithOut } from './dvMain'
-import { deepCopy } from '@/utils/utils'
+import { deepCopy, getStoragePrefix } from '@/utils/utils'
 import { BASE_THEMES } from '@/views/chart/components/editor/util/dataVisualization'
 import eventBus from '@/utils/eventBus'
 import { useEmitt } from '@/hooks/web/useEmitt'
@@ -217,7 +217,7 @@ export const snapshotStore = defineStore('snapshot', {
         // 清理缓存计数器
         this.snapshotCacheTimes = 0
         if (this.snapshotData.length > 1) {
-          wsCache.set('DE-DV-CATCH-' + dvInfo.value.id, newSnapshot)
+          wsCache.set(getStoragePrefix('DE-DV-CATCH-' + dvInfo.value.id), newSnapshot)
         }
       }
     }

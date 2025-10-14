@@ -3,7 +3,7 @@ import { ref, reactive, onBeforeMount, nextTick, inject } from 'vue'
 import { initCanvasData, initCanvasDataMobile, onInitReady } from '@/utils/canvasUtils'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useEmbedded } from '@/store/modules/embedded'
-import { isMobile } from '@/utils/utils'
+import { isMobile, getStoragePrefix } from '@/utils/utils'
 import { check } from '@/utils/CrossPermission'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { useCache } from '@/hooks/web/useCache'
@@ -40,7 +40,7 @@ const checkPer = async resourceId => {
   const request = { busiFlag: embeddedParams.busiFlag }
   await interactiveStore.setInteractive(request)
   const key = embeddedParams.busiFlag === 'dataV' ? 'screen-weight' : 'panel-weight'
-  return check(wsCache.get(key), resourceId, 1)
+  return check(wsCache.get(getStoragePrefix(key)), resourceId, 1)
 }
 const isPc = ref(true)
 onBeforeMount(async () => {

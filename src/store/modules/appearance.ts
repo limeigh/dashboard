@@ -6,7 +6,7 @@ import { useCache } from '@/hooks/web/useCache'
 import colorFunctions from 'less/lib/less/functions/color.js'
 import colorTree from 'less/lib/less/tree/color.js'
 import { useEmbedded } from '@/store/modules/embedded'
-import { setTitle } from '@/utils/utils'
+import { setTitle, getStoragePrefix } from '@/utils/utils'
 
 const embeddedStore = useEmbedded()
 const basePath = import.meta.env.VITE_API_BASEPATH
@@ -208,7 +208,7 @@ export const useAppearanceStore = defineStore('appearanceStore', {
       this.loaded = data
     },
     async setAppearance(isDataEaseBi?: boolean) {
-      const desktop = wsCache.get('app.desktop')
+      const desktop = wsCache.get(getStoragePrefix('app.desktop'))
       if (desktop) {
         this.loaded = true
         this.community = true

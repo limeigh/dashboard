@@ -49,6 +49,7 @@ import DePictureGroup from '@/custom-component/picture-group/Component.vue'
 import ChartEmptyInfo from '@/views/chart/components/views/components/ChartEmptyInfo.vue'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import { viewFieldTimeTrans } from '@/utils/viewUtils'
+import { getStoragePrefix } from '@/utils/utils'
 import { CHART_TYPE_CONFIGS } from '@/views/chart/components/editor/util/chart'
 import request from '@/config/axios'
 import { store } from '@/store'
@@ -376,7 +377,7 @@ const chartClick = param => {
 const filter = (firstLoad?: boolean) => {
   const { filter } = useFilter(view.value.id, firstLoad)
   const result = {
-    user: wsCache.get('user.uid'),
+    user: wsCache.get(getStoragePrefix('user.uid')),
     filter,
     linkageFilters: element.value.linkageFilters,
     outerParamsFilters: element.value.outerParamsFilters,
@@ -518,7 +519,7 @@ const jumpClick = param => {
               url = url + '&ignoreParams=true' + jumpInfoParam + editPreviewParams
             }
             const currentUrl = window.location.href
-            localStorage.setItem('beforeJumpUrl', currentUrl)
+            localStorage.setItem(getStoragePrefix('beforeJumpUrl'), currentUrl)
             windowsJump(url, jumpInfo.jumpType, jumpInfo.windowSize)
           } else {
             ElMessage.warning(t('visualization.public_link_tips'))
@@ -531,7 +532,7 @@ const jumpClick = param => {
             url = url + '&ignoreParams=true' + jumpInfoParam + editPreviewParams
           }
           const currentUrl = window.location.href
-          localStorage.setItem('beforeJumpUrl', currentUrl)
+          localStorage.setItem(getStoragePrefix('beforeJumpUrl'), currentUrl)
           if (divSelf || iframeSelf) {
             embeddedStore.setDvId(jumpInfo.targetDvId)
             embeddedStore.setJumpInfoParam(encodeURIComponent(Base64.encode(JSON.stringify(param))))

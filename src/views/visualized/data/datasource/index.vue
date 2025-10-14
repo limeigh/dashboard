@@ -91,7 +91,7 @@ import { iconFieldMap } from '@/components/icon-group/field-list'
 import { iconDatasourceMap } from '@/components/icon-group/datasource-list'
 import { querySymmetricKey } from '@/api/login'
 import { symmetricDecrypt } from '@/utils/encryption'
-import { isFreeFolder } from '@/utils/utils'
+import { isFreeFolder, getStoragePrefix } from '@/utils/utils'
 const route = useRoute()
 const interactiveStore = interactiveStoreWithOut()
 interface Field {
@@ -135,7 +135,7 @@ const createDataset = (tableName?: string) => {
     useEmitt().emitter.emit('changeCurrentComponent', 'DatasetEditor')
     return
   }
-  wsCache.set('ds-info-id', nodeInfo.id)
+  wsCache.set(getStoragePrefix('ds-info-id'), nodeInfo.id)
   router.push({
     path: '/dataset-form',
     query: {
@@ -219,7 +219,7 @@ const originResourceTree = shallowRef([])
 const handleSortTypeChange = sortType => {
   state.datasourceTree = treeSort(originResourceTree.value, sortType)
   state.curSortType = sortType
-  wsCache.set('TreeSort-datasource', state.curSortType)
+  wsCache.set(getStoragePrefix('TreeSort-datasource'), state.curSortType)
 }
 
 const sortTypeChange = sortType => {
@@ -481,8 +481,8 @@ const symmetricKey = ref('')
 const listDs = () => {
   rawDatasourceList.value = []
   dsLoading.value = true
-  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
-  curSortType = wsCache.get('TreeSort-datasource') ?? curSortType
+  let curSortType = sortList[Number(wsCache.get(getStoragePrefix('TreeSort-backend'))) ?? 1].value
+  curSortType = wsCache.get(getStoragePrefix('TreeSort-datasource')) ?? curSortType
   const request = { busiFlag: 'datasource' } as BusiTreeRequest
   interactiveStore
     .setInteractive(request)
@@ -1036,7 +1036,7 @@ const defaultProps = {
 }
 
 const loadInit = () => {
-  const historyTreeSort = wsCache.get('TreeSort-datasource')
+  const historyTreeSort = wsCache.get(getStoragePrefix('TreeSort-datasource'))
   if (historyTreeSort) {
     state.curSortType = historyTreeSort
   }
@@ -1052,9 +1052,9 @@ const proxyAllowDrop = debounce((arg1, arg2) => {
   return false
 }, 300)
 onMounted(() => {
-  const dsId = wsCache.get('ds-info-id') || route.params.id
+  const dsId = wsCache.get(getStoragePrefix('ds-info-id')) || route.params.id
   nodeInfo.id = (dsId as string) || (route.query.id as string) || ''
-  wsCache.delete('ds-info-id')
+  wsCache.delete(getStoragePrefix('ds-info-id'))
   loadInit()
   listDs()
   setSupportSetKey()

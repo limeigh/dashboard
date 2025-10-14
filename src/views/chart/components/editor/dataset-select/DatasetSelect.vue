@@ -15,6 +15,7 @@ import { useCache } from '@/hooks/web/useCache'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import treeSort from '@/utils/treeSortUtils'
+import { getStoragePrefix } from '@/utils/utils'
 
 const dvMainStore = dvMainStoreWithOut()
 const { wsCache } = useCache('localStorage')
@@ -61,7 +62,7 @@ const sourceName = computed(() =>
 )
 
 const sortTypeChange = arr => {
-  const sortType = wsCache.get('TreeSort-dataset') || 'time_desc'
+  const sortType = wsCache.get(getStoragePrefix('TreeSort-dataset')) || 'time_desc'
   datasetTree.value = treeSort(arr, sortType)
 }
 
@@ -240,8 +241,8 @@ const handleFocus = () => {
   if (
     props.sourceType === 'dataset' &&
     userStore.getOid &&
-    wsCache.get('user.oid') &&
-    userStore.getOid !== wsCache.get('user.oid')
+    wsCache.get(getStoragePrefix('user.oid')) &&
+    userStore.getOid !== wsCache.get(getStoragePrefix('user.oid'))
   ) {
     orgCheck.value = false
   } else {

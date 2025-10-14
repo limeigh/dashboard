@@ -10,7 +10,7 @@ import type { DatasetOrFolder } from '@/api/dataset'
 import { cloneDeep } from 'lodash-es'
 import nothingTree from '@/assets/img/nothing-tree.png'
 import { useCache } from '@/hooks/web/useCache'
-import { filterFreeFolder } from '@/utils/utils'
+import { filterFreeFolder, getStoragePrefix } from '@/utils/utils'
 export interface Tree {
   name: string
   value?: string | number
@@ -160,8 +160,8 @@ const createInit = (type, data: Tree, exec, name: string) => {
           state.tData[0].name = t('data_source.data_source')
         }
         originResourceTree.value = cloneDeep(unref(state.tData))
-        let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1]
-        curSortType = wsCache.get('TreeSort-datasource') ?? curSortType
+        let curSortType = sortList[Number(wsCache.get(getStoragePrefix('TreeSort-backend'))) ?? 1]
+        curSortType = wsCache.get(getStoragePrefix('TreeSort-datasource')) ?? curSortType
         sortTypeChange(curSortType)
       })
     }
@@ -228,7 +228,7 @@ const nodeClick = (data: Tree) => {
 }
 
 const successCb = () => {
-  wsCache.set('ds-new-success', true)
+  wsCache.set(getStoragePrefix('ds-new-success'), true)
   datasource.value.resetFields()
   request = null
   datasetForm.pid = ''
@@ -300,7 +300,7 @@ const saveDataset = () => {
                 method({ ...request, name: datasetForm.name, pid: params.pid })
                   .then(res => {
                     if (res !== undefined) {
-                      wsCache.set('ds-new-success', true)
+                      wsCache.set(getStoragePrefix('ds-new-success'), true)
                       emits('handleShowFinishPage', { ...res, pid: params.pid })
                       ElMessage.success(t('data_source.source_saved_successfully'))
                       successCb()
@@ -318,7 +318,7 @@ const saveDataset = () => {
             method({ ...request, name: datasetForm.name, pid: params.pid })
               .then(res => {
                 if (res !== undefined) {
-                  wsCache.set('ds-new-success', true)
+                  wsCache.set(getStoragePrefix('ds-new-success'), true)
                   emits('handleShowFinishPage', { ...res, pid: params.pid })
                   ElMessage.success(t('data_source.source_saved_successfully'))
                   successCb()

@@ -655,6 +655,7 @@ import { useCache } from '@/hooks/web/useCache'
 import { useEmbedded } from '@/store/modules/embedded'
 import { guid } from '@/views/visualized/data/dataset/form/util'
 import treeSort from '@/utils/treeSortUtils'
+import { getStoragePrefix } from '@/utils/utils'
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, canvasViewInfo, componentData } = storeToRefs(dvMainStore)
 const linkJumpInfoTree = ref(null)
@@ -807,7 +808,7 @@ const init = viewItem => {
       state.panelList = rsp
     }
     state.panelList = filterEmptyFolderTree(state.panelList)
-    const curSortType = wsCache.get(`TreeSort-${dvInfo.value.type}`) || 'time_asc'
+    const curSortType = wsCache.get(getStoragePrefix(`TreeSort-${dvInfo.value.type}`)) || 'time_asc'
     state.panelList = treeSort(state.panelList, curSortType)
   })
 

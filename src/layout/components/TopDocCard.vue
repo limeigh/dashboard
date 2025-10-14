@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { toRefs } from 'vue'
 import { useCache } from '@/hooks/web/useCache'
+import { getStoragePrefix } from '@/utils/utils'
 
 const { wsCache } = useCache('localStorage')
 const props = defineProps({
@@ -19,7 +20,7 @@ const { cardInfo } = toRefs(props)
 
 const openBlank = () => {
   if (cardInfo.value.url) {
-    const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+    const openType = wsCache.get(getStoragePrefix('open-backend')) === '1' ? '_self' : '_blank'
     window.open(cardInfo.value.url, openType)
   }
 }

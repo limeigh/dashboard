@@ -13,7 +13,7 @@ import * as echarts from 'echarts'
 import router from '@/router'
 import tinymce from 'tinymce/tinymce'
 import { useEmitt } from '@/hooks/web/useEmitt'
-import { isNull } from '@/utils/utils'
+import { isNull, getStoragePrefix } from '@/utils/utils'
 
 const { wsCache } = useCache()
 
@@ -66,7 +66,7 @@ useEmitt({
 
 const loadComponent = () => {
   loading.value = true
-  const byteArray = wsCache.get(`de-plugin-proxy`)
+  const byteArray = wsCache.get(getStoragePrefix(`de-plugin-proxy`))
   if (byteArray) {
     importProxy(JSON.parse(byteArray))
     loading.value = false
@@ -93,7 +93,7 @@ const storeCacheProxy = byteArray => {
   byteArray.forEach(item => {
     result.push([...item])
   })
-  wsCache.set(`de-plugin-proxy`, JSON.stringify(result))
+  wsCache.set(getStoragePrefix(`de-plugin-proxy`), JSON.stringify(result))
 }
 const pluginProxy = ref(null)
 const invokeMethod = param => {
@@ -110,13 +110,13 @@ defineExpose({
 onMounted(async () => {
   const key = 'xpack-model-distributed'
   let distributed = false
-  if (wsCache.get(key) === null) {
+  if (wsCache.get(getStoragePrefix(key)) === null) {
     const res = (await xpackModelApi()) || {}
     const resData = isNull(res.data) ? 'null' : res.data
-    wsCache.set('xpack-model-distributed', resData)
+    wsCache.set(getStoragePrefix('xpack-model-distributed'), resData)
     distributed = res.data
   } else {
-    distributed = wsCache.get(key)
+    distributed = wsCache.get(getStoragePrefix(key))
   }
   if (isNull(distributed)) {
     setTimeout(() => {
