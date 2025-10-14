@@ -1,1 +1,1 @@
-import{_ as e}from"./_plugin-vue_export-helper-0.0.0-dataease.js";import{f as t,O as r}from"./vue-0.0.0-dataease.js";const c={};function o(n,a){return t(),r("div",null,"auth")}const f=e(c,[["render",o]]);export{f as default};
+import{_ as e}from"./_plugin-vue_export-helper-0.0.0-dataease.js";import{o as t,c}from"./@vue-0.0.0-dataease.js";const o={};function r(n,a){return t(),c("div",null,"auth")}const f=e(o,[["render",r]]);export{f as default};

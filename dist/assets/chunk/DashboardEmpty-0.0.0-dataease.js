@@ -1,1 +1,1 @@
-import{_ as e}from"./_plugin-vue_export-helper-0.0.0-dataease.js";import{f as t,O as _}from"./vue-0.0.0-dataease.js";const o={},s={class:"not-support"};function a(c,r){return t(),_("div",s,"仪表板未开启移动端，无法在移动端展示")}const p=e(o,[["render",a],["__scopeId","data-v-15f1d95a"]]);export{p as default};
+import{_ as e}from"./_plugin-vue_export-helper-0.0.0-dataease.js";import{o,c as t}from"./@vue-0.0.0-dataease.js";const _={},s={class:"not-support"};function a(c,r){return o(),t("div",s,"仪表板未开启移动端，无法在移动端展示")}const p=e(_,[["render",a],["__scopeId","data-v-15f1d95a"]]);export{p as default};

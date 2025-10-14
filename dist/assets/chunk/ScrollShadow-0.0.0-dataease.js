@@ -1,1 +1,1 @@
-import{_ as e}from"./_plugin-vue_export-helper-0.0.0-dataease.js";import{f as o,O as t}from"./vue-0.0.0-dataease.js";const _={},c={class:"scroll-shadow-content"};function s(n,r){return o(),t("div",c,"tet")}const d=e(_,[["render",s],["__scopeId","data-v-8711f048"]]);export{d as default};
+import{_ as o}from"./_plugin-vue_export-helper-0.0.0-dataease.js";import{o as e,c}from"./@vue-0.0.0-dataease.js";const t={},_={class:"scroll-shadow-content"};function s(n,r){return e(),c("div",_,"tet")}const d=o(t,[["render",s],["__scopeId","data-v-8711f048"]]);export{d as default};

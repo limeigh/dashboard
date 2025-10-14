@@ -1,1 +1,1 @@
-import{_ as e}from"./_plugin-vue_export-helper-0.0.0-dataease.js";import{f as _,O as o}from"./vue-0.0.0-dataease.js";const t={},a={class:"area"};function c(s,n){return _(),o("div",a)}const p=e(t,[["render",c],["__scopeId","data-v-0da17bb5"]]);export{p as default};
+import{_ as e}from"./_plugin-vue_export-helper-0.0.0-dataease.js";import{o as _,c as o}from"./@vue-0.0.0-dataease.js";const t={},c={class:"area"};function a(s,n){return _(),o("div",c)}const p=e(t,[["render",a],["__scopeId","data-v-0da17bb5"]]);export{p as default};

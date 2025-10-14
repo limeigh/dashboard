@@ -1,0 +1,1 @@
+import{j as e}from"./ConfigGlobal.vue_vue_type_script_setup_true_lang-0.0.0-dataease.js";const s=o=>e.post({url:"/login/localLogin",data:o}),l=()=>e.get({url:"dekey"}),r=()=>e.get({url:"symmetricKey"}),u=()=>e.get({url:"model"}),a=()=>e.get({url:"/logout"}),i=()=>e.get({url:"/sysParameter/ui"});export{s as a,r as b,a as l,u as m,l as q,i as u};
