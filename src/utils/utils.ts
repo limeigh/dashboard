@@ -235,7 +235,8 @@ export const getBrowserLocale = () => {
   return language
 }
 export const getLocale = () => {
-  return wsCache.get(getStoragePrefix('user.language')) || getBrowserLocale() || 'zh-CN'
+  // return wsCache.get(getStoragePrefix('user.language')) || getBrowserLocale() || 'zh-CN'
+  return 'en'
 }
 
 export const isFreeFolder = (node, flag) => {
@@ -311,4 +312,48 @@ export const getActiveCategories = contents => {
 export const getStoragePrefix = key => {
   const prefix = import.meta.env.VITE_STORAGE_PREFIX || ''
   return `${prefix}dataease2-${key}`
+}
+
+export const checkJson = str => {
+  if (typeof str !== 'string') {
+    return false
+  }
+  str = str.replace(/\s/g, '').replace(/\n|\r/, '')
+  if (/^\{(.*?)\}$/.test(str)) {
+    return /"(.*?)":(.*?)/g.test(str)
+  }
+  if (/^\[(.*?)\]$/.test(str)) {
+    return str
+      .replace(/^\[/, '')
+      .replace(/\]$/, '')
+      .replace(/},{/g, '}\n{')
+      .split(/\n/)
+      .map(s => {
+        return checkJson(s)
+      })
+      .reduce((prev, curr) => {
+        return !!curr
+      })
+  }
+  return false
+}
+
+export const getUrlParams = () => {
+  let paramsArr = null
+  const index = window.location.href.lastIndexOf('?')
+  if (index > 0) {
+    const result = {}
+    paramsArr = window.location.href.substring(index + 1, window.location.href.length)
+    paramsArr = paramsArr.split('&')
+    paramsArr.forEach(key => {
+      const keyArr = key.split('=')
+      const k = keyArr[0]
+      let v = decodeURIComponent(keyArr[1])
+      if (checkJson(v)) {
+        v = JSON.parse(v)
+      }
+      result[k] = v
+    })
+    return result
+  }
 }

@@ -46,40 +46,40 @@ export interface AxiosInstanceWithLoading extends AxiosInstance {
   ): Promise<R>
 }
 
-const getTimeOut = () => {
-  let time = 100
-  const url = PATH_URL + '/sysParameter/requestTimeOut'
-  const xhr = new XMLHttpRequest()
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      if (xhr.responseText) {
-        try {
-          const response = JSON.parse(xhr.responseText)
-          if (response.code === 0) {
-            time = response.data
-          } else {
-            ElMessage.error('系统异常，请联系管理员')
-          }
-        } catch (e) {
-          ElMessage.error('系统异常，请联系管理员')
-        }
-      } else {
-        ElMessage.error('网络异常，请联系网管')
-      }
-    }
-  }
+// const getTimeOut = () => {
+//   let time = 100
+//   const url = PATH_URL + '/sysParameter/requestTimeOut'
+//   const xhr = new XMLHttpRequest()
+//   xhr.onreadystatechange = () => {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//       if (xhr.responseText) {
+//         try {
+//           const response = JSON.parse(xhr.responseText)
+//           if (response.code === 0) {
+//             time = response.data
+//           } else {
+//             ElMessage.error('系统异常，请联系管理员')
+//           }
+//         } catch (e) {
+//           ElMessage.error('系统异常，请联系管理员')
+//         }
+//       } else {
+//         ElMessage.error('网络异常，请联系网管')
+//       }
+//     }
+//   }
 
-  xhr.open('get', url, false)
-  xhr.send()
-  return time
-}
+//   xhr.open('get', url, false)
+//   xhr.send()
+//   return time
+// }
 
 // 创建axios实例
-const time = getTimeOut()
-window._de_get_time_out = time
+// const time = getTimeOut()
+// window._de_get_time_out = time
 const service: AxiosInstanceWithLoading = axios.create({
-  baseURL: PATH_URL, // api 的 base_url
-  timeout: time ? time * 1000 : config.request_timeout // 请求超时时间
+  baseURL: PATH_URL // api 的 base_url
+  // timeout: time ? time * 1000 : config.request_timeout // 请求超时时间
 })
 const mapping = {
   'zh-CN': 'zh-CN',
@@ -90,6 +90,7 @@ const permissionStore = usePermissionStoreWithOut()
 const linkStore = useLinkStoreWithOut()
 const CancelToken = axios.CancelToken
 const cancelMap = {}
+let lockLoginMsg = false // 防止登录失效出现多个提示
 
 // request拦截器
 service.interceptors.request.use(
@@ -168,6 +169,11 @@ service.interceptors.response.use(
       return response
     } else if (response.data.code === result_code || response.data.code === 50002) {
       return response.data
+    } else if (
+      response.data.responseCode === '10000006' ||
+      response.data.responseCode === '10000016'
+    ) {
+      gotoLogin()
     } else if (response.config.url.match(/^\/map|geo\/\d{3}\/\d+\.json$/)) {
       //   TODO 处理静态文件
       return response
@@ -319,4 +325,22 @@ const cancelRequestBatch = cancelKey => {
     }
   }
 }
-export { service, cancelMap, cancelRequestBatch }
+
+const gotoLogin = () => {
+  if (!lockLoginMsg) {
+    wsCache.clear()
+    // if (window.__POWERED_BY_QIANKUN__) {
+    //   const pathname = window.location.hash.substring(1)
+    //   globalCommunicate.action({type: 'toLogin', payload: {query: `redirectUrl=${encodeURIComponent(pathname)}`}})
+    // } eles if (!window.location.href.includes('/login')) {}
+    if (['dev', 'uat'].includes(import.meta.env.MODE)) {
+      const redirectUrl = encodeURIComponent(window.location.href)
+      window.location.href = `https://iic-dae-uat.ocft.com.sg/iicSeaUmsWeb/index.html#/login?redirectUrl=${redirectUrl}`
+      lockLoginMsg = true
+      setTimeout(() => {
+        lockLoginMsg = false
+      }, 3000)
+    }
+  }
+}
+export { service, cancelMap, cancelRequestBatch, gotoLogin }

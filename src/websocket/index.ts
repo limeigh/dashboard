@@ -44,7 +44,9 @@ export default {
         // const href = window.location.href
         prefix = location.origin + location.pathname
         if (env.MODE === 'dev') {
-          prefix = dev.server.proxy[basePath].target + '/'
+          // prefix = dev.server.proxy[basePath].target + '/'
+          prefix = location.origin + '/'
+          // prefix = 'https://iic-dae-uat.ocft.com.sg/'
         }
       }
       if (!prefix.endsWith('/')) {

@@ -53,7 +53,7 @@ export const configHandler = config => {
     return config
   }
   if (wsCache.get(getStoragePrefix('user.token'))) {
-    config.headers['X-DE-TOKEN'] = wsCache.get(getStoragePrefix('user.token'))
+    config.headers['Authorization'] = wsCache.get(getStoragePrefix('user.token'))
     // const expired = isExpired()
     // if (expired && !config.url.includes(refreshUrl)) {
     //   if (!getRefreshStatus()) {

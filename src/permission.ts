@@ -9,7 +9,7 @@ import { usePageLoading } from '@/hooks/web/usePageLoading'
 import { getRoleRouters } from '@/api/common'
 import { useCache } from '@/hooks/web/useCache'
 import { isMobile, checkPlatform, isLarkPlatform, isPlatformClient } from '@/utils/utils'
-import { getStoragePrefix } from '@/utils/utils'
+import { getStoragePrefix, getUrlParams } from '@/utils/utils'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { useEmbedded } from '@/store/modules/embedded'
@@ -27,6 +27,24 @@ const { loadStart, loadDone } = usePageLoading()
 const whiteList = ['/login', '/de-link', '/chart-view', '/admin-login', '/401'] // 不重定向白名单
 const embeddedWindowWhiteList = ['/dvCanvas', '/dashboard', '/preview', '/dataset-embedded-form']
 const embeddedRouteWhiteList = ['/dataset-embedded', '/dataset-form', '/dataset-embedded-form']
+
+const userInfo = JSON.parse(sessionStorage.getItem('iicSeaUmsWeb-userInfo'))
+console.log('userInfo========', userInfo)
+if (userInfo) {
+  const { tokenType = '', token = '', accessToken = '' } = userInfo
+  const _token = `${tokenType} ${token || accessToken}`
+  wsCache.set(getStoragePrefix('user.token'), _token)
+} else {
+  const userInfo = getUrlParams()?.userInfo
+  if (userInfo) {
+    sessionStorage.setItem('iicSeaUmsWeb-userInfo', JSON.stringify(userInfo))
+    const { tokenType = '', token = '', accessToken = '' } = userInfo
+    const _token = `${tokenType} ${token || accessToken}`
+    wsCache.set(getStoragePrefix('user.token'), _token)
+    window.location.href = window.location.pathname + '#/'
+  }
+}
+
 router.beforeEach(async (to, from, next) => {
   start()
   loadStart()
