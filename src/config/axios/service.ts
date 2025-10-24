@@ -329,6 +329,7 @@ const cancelRequestBatch = cancelKey => {
 const gotoLogin = () => {
   if (!lockLoginMsg) {
     wsCache.clear()
+    sessionStorage.clear()
     // if (window.__POWERED_BY_QIANKUN__) {
     //   const pathname = window.location.hash.substring(1)
     //   globalCommunicate.action({type: 'toLogin', payload: {query: `redirectUrl=${encodeURIComponent(pathname)}`}})
