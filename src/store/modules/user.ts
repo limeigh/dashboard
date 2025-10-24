@@ -67,7 +67,7 @@ export const userStore = defineStore('user', {
       })
       const locale = useLocaleStoreWithOut()
       if (locale.getCurrentLocale?.lang !== this.language) {
-        window.location.reload()
+        // window.location.reload()
       }
       this.setLanguage(this.language)
     },

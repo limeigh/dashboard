@@ -20,8 +20,8 @@ const createI18nOptions = async (): Promise<I18nOptions> => {
       defaultLocal = await import(`../../locales/${locale.lang}.ts`)
     }
   } else {
-    const item = localeMap[0]
-    localeStore.setLang(item.lang)
+    // const item = localeMap[0]
+    localeStore.setLang('en')
     locale = localeStore.getCurrentLocale
     defaultLocal = await import(`../../locales/${locale.lang}.ts`)
   }
