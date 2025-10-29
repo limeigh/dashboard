@@ -253,6 +253,7 @@ export const useAppearanceStore = defineStore('appearanceStore', {
       const res = await uiLoadApi()
       this.loaded = true
       const resData = res?.data
+      document.documentElement.style.setProperty('--ed-color-primary', '#50b848')
       if (!resData?.length) {
         if (!isDataEaseBi) {
           document.title = 'DataEase'

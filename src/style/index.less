@@ -5,6 +5,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  --ed-color-primary-dark-2: #50b848 !important;
+  --ed-color-primary-33: rgb(214.4,243.8,211.2) !important;
 }
 
 body {
@@ -716,3 +718,29 @@ strong {
     background-color: transparent;
   }
 }
+
+.ed-button--primary {
+  &:hover {
+    background-color: var(--ed-color-success-light-3) !important;
+    border-color: var(--ed-color-success-light-3) !important;
+  }
+}
+
+.ed-button--primary.is-disabled {
+  background-color: var(--ed-color-primary) !important;
+  border-color: var(--ed-color-primary) !important;
+  &:hover {
+    background-color: var(--ed-color-success-light-5) !important;
+    border-color: var(--ed-color-success-light-5) !important;
+    outline: none;
+  }
+}
+
+.ed-button:focus-visible {
+  outline: 2px solid var(--ed-color-success-light-7) !important;
+}
+
+.df-dataset-form .container .ed-form .m-item.selectedClass {
+  border: 1px solid var(--ed-color-primary) !important;
+}
+
