@@ -326,10 +326,17 @@ const cancelRequestBatch = cancelKey => {
   }
 }
 
+/**
+ * 跳转到登录页面的函数
+ * 根据不同环境进行不同的登录跳转逻辑
+ */
 const gotoLogin = () => {
+  // 检查是否有登录消息锁，防止重复触发
   if (!lockLoginMsg) {
+    // 清除缓存和会话存储
     wsCache.clear()
     sessionStorage.clear()
+    // 注释掉的代码是处理微前端环境下的登录跳转逻辑
     // if (window.__POWERED_BY_QIANKUN__) {
     //   const pathname = window.location.hash.substring(1)
     //   globalCommunicate.action({type: 'toLogin', payload: {query: `redirectUrl=${encodeURIComponent(pathname)}`}})

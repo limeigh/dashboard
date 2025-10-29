@@ -13,6 +13,7 @@ import { getStoragePrefix, getUrlParams } from '@/utils/utils'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { useEmbedded } from '@/store/modules/embedded'
+import { gotoLogin } from '@/config/axios/service'
 const appearanceStore = useAppearanceStoreWithOut()
 const { wsCache } = useCache()
 const permissionStore = usePermissionStoreWithOut()
@@ -42,6 +43,8 @@ if (userInfo) {
     const _token = `${tokenType} ${token || accessToken}`
     wsCache.set(getStoragePrefix('user.token'), _token)
     window.location.href = window.location.pathname + '#/'
+  } else {
+    gotoLogin()
   }
 }
 
