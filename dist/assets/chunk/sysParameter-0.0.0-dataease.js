@@ -1,1 +1,1 @@
-import{j as a}from"./ConfigGlobal.vue_vue_type_script_setup_true_lang-0.0.0-dataease.js";const r=()=>a.get({url:"/sysParameter/queryOnlineMap"}),p=e=>a.get({url:`/sysParameter/queryOnlineMap/${e}`}),t=e=>a.post({url:"/sysParameter/saveOnlineMap",data:e});export{p as a,r as q,t as s};
+import{k as a}from"./ConfigGlobal.vue_vue_type_script_setup_true_lang-0.0.0-dataease.js";const r=()=>a.get({url:"/sysParameter/queryOnlineMap"}),p=e=>a.get({url:`/sysParameter/queryOnlineMap/${e}`}),t=e=>a.post({url:"/sysParameter/saveOnlineMap",data:e});export{p as a,r as q,t as s};
