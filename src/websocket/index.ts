@@ -42,10 +42,10 @@ export default {
         prefix = window.DataEaseBi.baseUrl
       } else {
         // const href = window.location.href
-        prefix = location.origin + '/'
+        prefix = location.origin + '/iic-dae-dataease2/'
         if (env.MODE === 'dev') {
           // prefix = dev.server.proxy[basePath].target + '/'
-          prefix = 'https://iic-dae-uat.ocft.com.sg/'
+          prefix = 'https://iic-dae-uat.ocft.com.sg/iic-dae-dataease2/'
         }
       }
       if (!prefix.endsWith('/')) {
