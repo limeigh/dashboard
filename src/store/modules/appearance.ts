@@ -216,37 +216,56 @@ export const useAppearanceStore = defineStore('appearanceStore', {
       if (this.loaded) {
         return
       }
-      defaultFont().then(res => {
-        const [font] = res || []
-        setDefaultFont(
-          `${
-            embeddedStore.baseUrl
-              ? (embeddedStore.baseUrl + basePath).replace('/./', '/')
-              : basePath
-          }/typeface/download/${font?.fileTransName}`,
-          font?.name,
-          font?.fileTransName
-        )
-        function setDefaultFont(url, name, fileTransName) {
-          let fontStyleElement = document.querySelector('#de-custom_font')
-          if (!fontStyleElement) {
-            fontStyleElement = document.createElement('style')
-            fontStyleElement.setAttribute('id', 'de-custom_font')
-            document.querySelector('head').appendChild(fontStyleElement)
-          }
-          fontStyleElement.innerHTML =
-            name && fileTransName
-              ? `@font-face {
-                font-family: '${name}';
-                src: url(${url});
-                font-weight: normal;
-                font-style: normal;
-                }`
-              : ''
-          document.documentElement.style.setProperty('--de-custom_font', `${name}`)
-          document.documentElement.style.setProperty('--van-base-font', `${name}`)
+      // defaultFont().then(res => {
+      //   const [font] = res || []
+      //   setDefaultFont(
+      //     `${
+      //       embeddedStore.baseUrl
+      //         ? (embeddedStore.baseUrl + basePath).replace('/./', '/')
+      //         : basePath
+      //     }/typeface/download/${font?.fileTransName}`,
+      //     font?.name,
+      //     font?.fileTransName
+      //   )
+      // function setDefaultFont(url, name, fileTransName) {
+      let fontStyleElement = document.querySelector('#de-custom_font')
+      if (!fontStyleElement) {
+        fontStyleElement = document.createElement('style')
+        fontStyleElement.setAttribute('id', 'de-custom_font')
+        document.querySelector('head').appendChild(fontStyleElement)
+      }
+      // fontStyleElement.innerHTML =
+      //   name && fileTransName
+      //     ? `@font-face {
+      //       font-family: '${name}';
+      //       src: url(${url});
+      //       font-weight: normal;
+      //       font-style: normal;
+      //       }`
+      //     : ''
+      const fontWeights = {
+        400: 'Montserrat-Regular',
+        500: 'Montserrat-Medium',
+        600: 'Montserrat-SemiBold'
+      }
+      const generateFontFace = (weight: number, fileName: string) => `
+        @font-face {
+          font-family: 'Montserrat';
+          font-display: swap;
+          src: url('${window.location.origin}/iicSeaUmsWeb/fonts/${fileName}.woff2') format('woff2');
+          font-weight: ${weight};
+          font-style: normal;
         }
-      })
+      `
+      const fontStyles = Object.entries(fontWeights)
+        .map(([weight, fileName]) => generateFontFace(Number(weight), fileName))
+        .join('\n')
+
+      fontStyleElement.innerHTML = fontStyles
+      document.documentElement.style.setProperty('--de-custom_font', `Montserrat`)
+      document.documentElement.style.setProperty('--van-base-font', `Montserrat`)
+      // }
+      // })
       if (!isDataEaseBi) {
         document.title = ''
       }
